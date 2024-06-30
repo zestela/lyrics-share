@@ -1,0 +1,110 @@
+@font-face {
+	font-family: 'HarmonyOS Sans';
+	src:
+		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Medium.woff2") format("woff2"),
+		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Bold.woff2") format("woff2"),
+		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Black.woff2") format("woff2");
+}
+
+* {
+	font-family: "HarmonyOS Sans";
+}
+
+body {
+	margin: 0;
+}
+
+.el-header {
+	height: 25vh !important;
+	border: none;
+	background-color: white;
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+
+	* {
+		height: min-content;
+	}
+}
+
+.el-main {
+	margin: {
+		top: 50px;
+		bottom: 50px;
+	}
+
+	.search-box {
+		display: flex;
+		justify-content: center;
+
+		.el-input {
+			width: 35%;
+			height: 47px;
+			border-radius: 15px;
+			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
+
+			.el-input__wrapper{
+				box-shadow: none;
+				border: {
+					style: solid;
+					width: 1px;
+					color: #E3E3E3;
+					right-width: 0px;
+					top-left-radius: 15px;
+					bottom-left-radius: 15px
+				};
+			}
+
+			.el-input-group__append {
+				color: white;
+				background-color: #311E8F;
+				box-shadow: none;
+				border: {
+					top-right-radius: 15px;
+					bottom-right-radius: 15px
+				};
+			}
+		}
+	}
+
+	img {
+		border-radius: 15px;
+	}
+}
+
+#search_suggestions {
+	width: 35%;
+	height: 360px;
+	position: absolute;
+	margin-top: 50px;
+	z-index: 1;
+	display: none;
+	border-radius: 15px;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
+	.el-card__body {
+		flex-wrap: wrap;
+		.el-button {
+			display: block;
+			border: none;
+			margin: 0 !important;
+			width: 100%;
+			text-align: start;
+		}
+	}
+}
+
+.generation-btn {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	padding: 25px 30px 25px 30px !important;
+	font-size: 20px !important;
+	z-index: 999;
+}
+
+
+/* @media screen and (min-width: 1024px) {
+	.el-main div {
+		width:50%;
+	}
+} */
