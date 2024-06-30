@@ -7,7 +7,7 @@ import shareView1 from "./views/shareView1.vue";
     <img src="/logo.png" alt="" width="254" />
   </el-header>
   <el-main>
-    <div class="mt-4 search-box">
+    <div class="search-box">
       <el-input v-model="search_name" placeholder="请输入想分享的歌曲名称...">
         <template #append><el-button @click="search_song">搜索</el-button></template>
       </el-input>
@@ -16,20 +16,33 @@ import shareView1 from "./views/shareView1.vue";
           content.artist }}</el-button>
       </el-card>
     </div>
-    <div>
-      <img :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous"/>
-      <div>
-        <el-input v-model="song_name" placeholder="歌曲名称" />
-        <el-input v-model="song_artist" placeholder="歌曲创作者" />
+    <div class="info-box">
+      <div class="info-flexbox">
+        <img :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
+        <div class="info-inbox">
+          <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input" />
+          <el-input v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
+        </div>
       </div>
     </div>
-    <el-input v-model="song_lyrics" rows="15" type="textarea" placeholder="歌曲歌词" />
-    <el-select v-model="selectedView" placeholder="海报样式" size="large" style="width: 240px" @change="$forceUpdate()">
-      <el-option label="样式1" value="shareView1" />
-      <el-option label="样式2" value="shareView2" />
-    </el-select>
+    <el-input v-model="song_lyrics" rows="15" type="textarea" placeholder="歌曲歌词" class="lyrics-input" />
+    <div class="select-box">
+      <div class="select-inbox">
+        <el-select v-model="selectedView" placeholder="海报样式" size="large" @change="$forceUpdate()" style="margin-right: 20px;">
+          <el-option label="样式1" value="shareView1" />
+          <el-option label="样式2" value="shareView2" />
+        </el-select>
+        <el-select v-model="selectedSize" placeholder="样式大小" size="large" @change="$forceUpdate()">
+          <el-option label="桌面" value="pc" />
+          <el-option label="移动" value="mobile" />
+          <el-option label="迷你" value="mini" />
+        </el-select>
+      </div>
+    </div>
+    <div class="generation-btn-box">
+      <el-button class="generation-btn" @click="generation_share">生成</el-button>
+    </div>
   </el-main>
-  <el-button type="primary" class="generation-btn" @click="generation_share">生成</el-button>
   <component :is="selectedView" v-show="showView" :name="song_name" :artist="song_artist" :lyrics="song_lyrics"
     :coverUrl="song_coverUrl" />
 </template>
@@ -57,6 +70,7 @@ export default {
       song_coverUrl: "./default-cover.png",
       song_list: [],
       selectedView: "shareView1",
+      selectedSize: "pc",
       showView: false,
       api_url: "https://music.cyrilstudio.top"
     };
@@ -108,10 +122,10 @@ export default {
     async generation_share() {
       this.showView = true;
       html2canvas(document.getElementsByClassName("share-body")[0], { useCORS: true, scale: 2 }).then((canvas) => {
-      let img = new Image();
-      img.src = canvas.toDataURL('image/jpeg', 1.0);
-      let picWindow = window.open('', '_blank');
-      picWindow.document.write(img.outerHTML);
+        let img = new Image();
+        img.src = canvas.toDataURL('image/jpeg', 1.0);
+        let picWindow = window.open('', '_blank');
+        picWindow.document.write(img.outerHTML);
       });
     }
   },

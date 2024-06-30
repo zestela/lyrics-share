@@ -15,7 +15,7 @@ body {
 }
 
 .el-header {
-	height: 25vh !important;
+	height: 20vh !important;
 	border: none;
 	background-color: white;
 	display: flex;
@@ -43,8 +43,9 @@ body {
 			border-radius: 15px;
 			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
 
-			.el-input__wrapper{
+			.el-input__wrapper {
 				box-shadow: none;
+
 				border: {
 					style: solid;
 					width: 1px;
@@ -52,23 +53,138 @@ body {
 					right-width: 0px;
 					top-left-radius: 15px;
 					bottom-left-radius: 15px
-				};
+				}
+
+				;
 			}
 
 			.el-input-group__append {
 				color: white;
 				background-color: #311E8F;
 				box-shadow: none;
+
 				border: {
 					top-right-radius: 15px;
 					bottom-right-radius: 15px
-				};
+				}
+
+				;
 			}
 		}
 	}
 
-	img {
-		border-radius: 15px;
+	.info-box {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		display: flex;
+		justify-content: center;
+		flex-wrap: nowrap;
+
+		.info-flexbox {
+			width: 35%;
+			display: flex;
+			flex-wrap: nowrap;
+
+			img {
+				border-radius: 15px;
+			}
+
+			.info-inbox {
+				margin-left: 5px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-wrap: wrap;
+				flex: 1;
+				height: 87px;
+
+				border: {
+					style: solid;
+					width: 1px;
+					color: #E3E3E3;
+					radius: 15px;
+				}
+
+				;
+
+				.song-name-input .el-input__wrapper .el-input__inner {
+					font-weight: bold;
+				}
+
+				.el-input {
+					width: 90%;
+
+					.el-input__wrapper {
+						font-size: 20px;
+						padding: 0;
+						box-shadow: none;
+
+						.el-input__inner {
+							color: black;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.lyrics-input {
+		display: flex;
+		justify-content: center;
+
+		.el-textarea__inner {
+			color: black;
+			border-radius: 15px;
+			border-color: #E3E3E3;
+			resize: none;
+			height: 35vh;
+			width: 35%;
+			padding: 20px;
+			scrollbar-width: thin;
+			scrollbar-color: #e3e3e3 transparent;
+		}
+	}
+
+	.select-box {
+		display: flex;
+		justify-content: center;
+		margin-top: 10px;
+		margin-bottom: 20px;
+
+		.select-inbox {
+			width: 35%;
+			display: flex;
+			flex-wrap: nowrap;
+
+			.el-select {
+				.el-select__wrapper {
+					color: black;
+					border-color: #E3E3E3;
+					border-radius: 15px;
+					.el-select__selection span {
+						color:black;
+					}
+					.el-select__suffix i {
+						color: #999999;
+					}
+				}
+			}
+		}
+	}
+
+	.generation-btn-box {
+		display: flex;
+		justify-content: center;
+
+		.generation-btn {
+			color: white;
+			background-color: #311E8F;
+			border: none;
+			border-radius: 15px;
+			width: 83px;
+			height: 36px;
+			font-size: 16px !important;
+		}
 	}
 }
 
@@ -81,8 +197,10 @@ body {
 	display: none;
 	border-radius: 15px;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
+
 	.el-card__body {
 		flex-wrap: wrap;
+
 		.el-button {
 			display: block;
 			border: none;
@@ -91,15 +209,6 @@ body {
 			text-align: start;
 		}
 	}
-}
-
-.generation-btn {
-	position: fixed;
-	bottom: 10px;
-	right: 10px;
-	padding: 25px 30px 25px 30px !important;
-	font-size: 20px !important;
-	z-index: 999;
 }
 
 
