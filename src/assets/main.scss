@@ -194,7 +194,6 @@ body {
 	position: absolute;
 	margin-top: 50px;
 	z-index: 1;
-	display: none;
 	border-radius: 15px;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
 
@@ -211,6 +210,37 @@ body {
 	}
 }
 
+#share-box {
+	display: flex;
+	justify-content: center;
+	flex-shrink:0;
+}
+
+#share-inbox {
+	min-width: 100%;
+	border: 1px #E3E3E3 solid;
+}
+
+.share-btn-box {
+	display: flex;
+	justify-content: center;
+
+	.share-btn {
+		margin-top: 10px;
+		color: white;
+		background-color: #311E8F;
+		border: none;
+		border-radius: 15px;
+		width: 83px;
+		height: 36px;
+		font-size: 16px !important;
+
+		&:hover {
+			color: white;
+			background-color: #311E8F;
+		}		
+	}
+}
 
 /* @media screen and (min-width: 1024px) {
 	.el-main div {
