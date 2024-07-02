@@ -5,11 +5,11 @@ import shareView2 from "./views/shareView2.vue";
 
 <template>
   <el-header>
-    <img src="/logo.png" alt="" width="254" />
+    <img src="/logo.png" alt="" width="200px" />
   </el-header>
   <el-main>
     <div class="search-box">
-      <el-input v-model="search_name" placeholder="请输入想分享的歌曲名称...">
+      <el-input v-model="search_name" placeholder="输入想要分享的歌曲名称...">
         <template #append><el-button @click="search_song">搜索</el-button></template>
       </el-input>
       <el-card id="search_suggestions" v-show="showSuggestions">
@@ -21,8 +21,8 @@ import shareView2 from "./views/shareView2.vue";
       <div class="info-flexbox">
         <img :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
         <div class="info-inbox">
-          <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input" />
-          <el-input v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
+          <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input song-input" />
+          <el-input class="song-input" v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@ import shareView2 from "./views/shareView2.vue";
       <el-button class="generation-btn" @click="generationShare">生成</el-button>
     </div>
   </el-main>
-  <el-dialog v-model="showShareDialog" title="预览" width="30%" @open="open()">
+  <el-dialog v-model="showShareDialog" title="预览" @open="open()">
     <div class="preview-box">
       <img src="" alt="Preview Loading..." ref="previewImg">
     </div>
@@ -89,7 +89,7 @@ export default {
       showSuggestions: false,
       showShareDialog: false,
       api_url: "https://music.cyrilstudio.top",
-      bgdColor: ""
+      bgdColor: "",
     };
   },
   components: { shareView1,shareView2 },
