@@ -6,7 +6,8 @@ export default {
       artist: String,
       coverUrl: String,
       lyrics: String,
-      size: String
+      size: String,
+      bgdColor: String
     },
     data() {
       return {
@@ -16,40 +17,31 @@ export default {
       }
     },
     created () {
-      if (this.size == "0") {
-          this.shareBodyWidth = "100%";
-          this.mainCardWidth = "35%";
-          this.shareBodyHeight = "100vh";
-        }
-        else if (this.size == "1") {
-          this.shareBodyWidth = "680px";
-          this.mainCardWidth = "50%";
-          this.shareBodyHeight = "90vh";
-        }
-        else {
-          this.shareBodyWidth = "300px";
-          this.mainCardWidth = "80%";
-          this.shareBodyHeight = "80vh";
-        }
+      this.applyStyle();
     },
     watch: {
       size() {
-        if (this.size == "0") {
-          this.shareBodyWidth = "100%";
-          this.mainCardWidth = "35%";
-          this.shareBodyHeight = "100vh";
-        }
-        else if (this.size == "1") {
-          this.shareBodyWidth = "680px";
-          this.mainCardWidth = "50%";
-          this.shareBodyHeight = "90vh";
-        }
-        else {
-          this.shareBodyWidth = "300px";
-          this.mainCardWidth = "80%";
-          this.shareBodyHeight = "unset";
-        }
+        this.applyStyle();
       }
+    },
+    methods: {
+        applyStyle() {
+          if (this.size == "0") {
+            this.shareBodyWidth = "100%";
+            this.mainCardWidth = "35%";
+            this.shareBodyHeight = "100vh";
+          }
+          else if (this.size == "1") {
+            this.shareBodyWidth = "680px";
+            this.mainCardWidth = "50%";
+            this.shareBodyHeight = "90vh";
+          }
+          else {
+            this.shareBodyWidth = "300px";
+            this.mainCardWidth = "80%";
+            this.shareBodyHeight = "80vh";
+          }
+        } 
     }
 }
 
@@ -62,7 +54,7 @@ export default {
         <div v-html="lyrics"></div>
       </div>
       <div class="info-card">
-        <img :src="coverUrl" height="50">
+        <img :src="coverUrl">
         <div>
           <div v-text="name"></div>
           <div v-text="artist"></div>
@@ -80,7 +72,7 @@ export default {
   padding-bottom: 20px;
   width: v-bind(shareBodyWidth);
   height: v-bind(shareBodyHeight);
-  backdrop-filter: blur(30px);
+  background-color: v-bind(bgdColor);
   display: flex;
   justify-content: center;
   align-content: center;
@@ -106,6 +98,7 @@ export default {
       align-items: center;
 
       img {
+        width: 4rem;
         border-radius: 5px;
       }
 

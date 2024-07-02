@@ -1,5 +1,6 @@
 <script setup>
 import shareView1 from "./views/shareView1.vue";
+import shareView2 from "./views/shareView2.vue";
 </script>
 
 <template>
@@ -55,13 +56,13 @@ import shareView1 from "./views/shareView1.vue";
   </el-dialog>
   <div class="share-box" v-show="showView">
     <component :is="selectedView" :name="song_name" :artist="song_artist" :lyrics="song_lyrics"
-  :coverUrl="song_coverUrl" :size="selectedSize" />
+  :coverUrl="song_coverUrl" :size="selectedSize" :bgdColor="bgdColor" />
   </div>
 </template>
 
 <script>
 import { extractColors } from 'extract-colors';
-import html2canvas from 'html2canvas'
+import html2canvas from 'html2canvas';
 
 async function getJSON(url) {
   try {
@@ -88,19 +89,20 @@ export default {
       showSuggestions: false,
       showShareDialog: false,
       api_url: "https://music.cyrilstudio.top",
+      bgdColor: ""
     };
   },
-  components: { shareView1 },
+  components: { shareView1,shareView2 },
   watch: {
     song_coverUrl() {
       let imgElement = new Image();
       imgElement.crossOrigin = 'Anonymous';
       imgElement.src = this.song_coverUrl;
-      imgElement.onload = async function () {
+      imgElement.onload = async () => {
         let imgGetter = document.createElement("canvas");
-        imgGetter.getContext("2d").drawImage(this, 0, 0, 1024, 1024);
+        imgGetter.getContext("2d").drawImage(imgElement, 0, 0, 1024, 1024);
         let colorLst = await extractColors(imgGetter.toDataURL("image/jpg"));
-        document.getElementsByClassName("share-body")[0].style.backgroundColor = colorLst[0].hex;
+        this.bgdColor = colorLst[0].hex;
       }
     }
   },
@@ -136,7 +138,7 @@ export default {
     },
     async generationShare() {
       this.showShareDialog = true;
-      this.showView= true;
+      this.showView = true;
     },
     saveShare() {
       html2canvas(document.getElementsByClassName("share-body")[0], { useCORS: true, scale: 2 }).then((canvas) => {
