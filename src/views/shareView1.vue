@@ -12,7 +12,7 @@ export default {
     data() {
       return {
         shareBodyWidth: "100%",
-        shareBodyHeight: "100vh",
+        shareBodyMinHeight: "100vh",
         mainCardWidth: "35%"
       }
     },
@@ -22,24 +22,27 @@ export default {
     watch: {
       size() {
         this.applyStyle();
+      },
+      coverUrl() {
+        this.$refs.coverImg.src = this.coverUrl;
       }
     },
     methods: {
         applyStyle() {
           if (this.size == "0") {
-            this.shareBodyWidth = "100%";
+            this.shareBodyWidth = "1920px";
             this.mainCardWidth = "35%";
-            this.shareBodyHeight = "100vh";
+            this.shareBodyMinHeight = "100vh";
           }
           else if (this.size == "1") {
-            this.shareBodyWidth = "680px";
+            this.shareBodyWidth = "540px";
             this.mainCardWidth = "50%";
-            this.shareBodyHeight = "90vh";
+            this.shareBodyMinHeight = "960px";
           }
           else {
-            this.shareBodyWidth = "300px";
+            this.shareBodyWidth = "400px";
             this.mainCardWidth = "80%";
-            this.shareBodyHeight = "80vh";
+            this.shareBodyMinHeight = "400px";
           }
         } 
     }
@@ -54,11 +57,11 @@ export default {
         <div v-html="lyrics"></div>
       </div>
       <div class="info-card">
-        <img :src="coverUrl">
+        <img draggable="false" ref="coverImg" :src="coverUrl">
         <div>
           <div v-text="name"></div>
           <div v-text="artist"></div>
-          <img src="/view-logo-1.png" width="80" alt="Lyrics Share Logo">
+          <img draggable="false" src="/view-logo-1.png" width="80" alt="Lyrics Share Logo">
         </div>
       </div>
     </div>
@@ -67,11 +70,14 @@ export default {
 
 <style lang="scss">
 .share-body {
+  * {
+    user-select: none;
+  }
   margin: 0;
   padding-top: 20px;
   padding-bottom: 20px;
   width: v-bind(shareBodyWidth);
-  height: v-bind(shareBodyHeight);
+  min-height: v-bind(shareBodyMinHeight);
   background-color: v-bind(bgdColor);
   display: flex;
   justify-content: center;
@@ -88,7 +94,7 @@ export default {
     backdrop-filter: blur(30px);
 
     .info-card {
-      background-color: rgba(88, 88, 88, 0.5);
+      background-color: rgba(88, 88, 88, 0.4);
       margin: 0;
       padding: 20px;
       border-bottom-left-radius: 5px;
@@ -108,7 +114,7 @@ export default {
     }
 
     .lyrics-card {
-      background-color: rgba(88, 88, 88, 0.4);
+      background-color: rgba(88, 88, 88, 0.25);
       margin: 0;
       padding: 20px;
       border-top-left-radius: 5px;

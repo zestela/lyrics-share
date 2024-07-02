@@ -5,11 +5,11 @@ import shareView2 from "./views/shareView2.vue";
 
 <template>
   <el-header>
-    <img src="/logo.png" alt="" width="200px" />
+    <img draggable="false" src="/logo.png" alt="" width="200px" />
   </el-header>
   <el-main>
     <div class="search-box">
-      <el-input v-model="search_name" placeholder="输入想要分享的歌曲名称...">
+      <el-input v-model="search_name" placeholder="输入想要分享的歌曲名称..." @keyup.enter="search_song">
         <template #append><el-button @click="search_song">搜索</el-button></template>
       </el-input>
       <el-card id="search_suggestions" v-show="showSuggestions">
@@ -20,10 +20,12 @@ import shareView2 from "./views/shareView2.vue";
     <div class="info-box">
       <div class="info-flexbox">
         <img :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
+        <el-tooltip content="可自行修改歌名、艺术家与歌词" placement="right" effect="light" :visible="showTip">
         <div class="info-inbox">
-          <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input song-input" />
-          <el-input class="song-input" v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
+          <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input" />
+          <el-input v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
         </div>
+      </el-tooltip>
       </div>
     </div>
     <el-input v-model="song_lyrics" rows="15" type="textarea" placeholder="歌曲歌词" class="lyrics-input" />
@@ -48,6 +50,10 @@ import shareView2 from "./views/shareView2.vue";
   <el-dialog v-model="showShareDialog" title="预览" @open="open()">
     <div class="preview-box">
       <img src="" alt="Preview Loading..." ref="previewImg">
+    </div>
+    <div class="preview-info-box">
+      <el-text class="mx-1">{{ selectedText.style }}</el-text>
+      <el-text class="mx-1">{{ selectedText.size }}</el-text>
     </div>
     <div class="share-btn-box">
       <el-button class="share-btn" @click="saveShare">保存</el-button>
@@ -86,10 +92,15 @@ export default {
       selectedView: "shareView1",
       selectedSize: "0",
       showView: false,
+      showTip: true,
       showSuggestions: false,
       showShareDialog: false,
       api_url: "https://music.cyrilstudio.top",
       bgdColor: "",
+      selectedText: {
+        style: "样式1",
+        size: "全屏幕大小"
+      }
     };
   },
   components: { shareView1,shareView2 },
@@ -108,6 +119,9 @@ export default {
   },
   methods: {
     async search_song() {
+      if(this.search_name == "")
+        return ;
+      this.showTip = false;
       this.song_list = this.song_list.slice(0, 0);
       let response = await getJSON(
         this.api_url + "/search?keywords=" + this.search_name
@@ -137,8 +151,14 @@ export default {
       this.showSuggestions = false;
     },
     async generationShare() {
+      if (this.song_name == "" || this.song_artist == "" || this.song_lyrics == "")
+        return;
       this.showShareDialog = true;
       this.showView = true;
+      let selectedTextStyles = ["","样式1","样式2"];
+      let selectedTextSizes = ["全屏幕大小","手机大小","小尺寸"]
+      this.selectedText.size = selectedTextSizes[this.selectedSize];
+      this.selectedText.style = selectedTextStyles[this.selectedView.split("w")[1]]
     },
     saveShare() {
       html2canvas(document.getElementsByClassName("share-body")[0], { useCORS: true, scale: 2 }).then((canvas) => {

@@ -4,11 +4,12 @@ $zestelaColor: #311E8F;
 :root {
 	--el-color-primary: #6A5DAE !important;
 	--el-color-primary-light-3: #beb3f4 !important;
-    --el-color-primary-light-5: #bdb3f0 !important;
-    --el-color-primary-light-7: #c1b7f4 !important;
-    --el-color-primary-light-8: #cec6fd !important;
-    --el-color-primary-light-9: #e0d9ff !important;
+	--el-color-primary-light-5: #bdb3f0 !important;
+	--el-color-primary-light-7: #c1b7f4 !important;
+	--el-color-primary-light-8: #cec6fd !important;
+	--el-color-primary-light-9: #e0d9ff !important;
 }
+
 @font-face {
 	font-family: 'HarmonyOS Sans';
 	src:
@@ -22,6 +23,7 @@ $zestelaColor: #311E8F;
 }
 
 body {
+	overflow-x: visible;
 	margin: 0;
 }
 
@@ -32,8 +34,8 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
-
 	* {
+		user-select: none;
 		height: min-content;
 	}
 }
@@ -126,6 +128,7 @@ body {
 
 				.el-input {
 					width: 90%;
+
 					.el-input__wrapper {
 						font-size: 20px;
 						padding: 0;
@@ -214,6 +217,7 @@ body {
 	.el-card__body {
 		flex-wrap: wrap;
 		--el-card-padding: 12px !important;
+
 		.el-button {
 			display: block;
 			border: none;
@@ -276,13 +280,30 @@ body {
 	}
 }
 
+.preview-info-box {
+	margin-top: 10px;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	* {
+		color: black !important;
+		text-align: center;
+		width: 100%;
+	}
+}
+
 // .share-box {
 // 	margin-top: 100rem;
 // }
 
 @media screen and (max-width: 600px) {
+	#search_suggestions {
+		width: 90%;
+	}
+
 	.el-dialog {
 		--el-dialog-width: 95% !important;
+
 		.el-dialog__body {
 			.preview-box {
 				img {
@@ -291,58 +312,64 @@ body {
 			}
 		}
 	}
+
 	.el-main {
 		margin: {
 			top: 4vh;
 			bottom: 4vh;
 		}
+
 		.search-box {
 			.el-input {
 				width: 97%;
 			}
+
 			.el-input-group__append {
 				padding-left: 20px !important;
 				padding-right: 20px !important;
-	
+
 			}
 
 		}
-	
+
 		.info-box {
-	
 			.info-flexbox {
 				width: 97%;
-	
-	
 				.info-inbox {
-	
-					
-	
 					.el-input {
 						width: 97%;
-	
-			
 					}
 				}
 			}
 		}
 
-	
+
 		.lyrics-input {
-	
 			.el-textarea__inner {
 				width: 97%;
 			}
 		}
-	
+
 		.select-box {
 			.select-inbox {
 				width: 97%;
 			}
 		}
 
-		.song-input{
+		.info-inbox .el-input {
 			width: 80% !important;
 		}
+	}
+}
+
+.el-popper {
+	border-radius: 15px !important;
+	border-color: $borderColor !important;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07) !important;
+}
+
+.el-select__popper {
+	.el-popper__arrow {
+		display: none;
 	}
 }
