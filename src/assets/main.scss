@@ -1,3 +1,6 @@
+$borderColor: #e3e3e3;
+$zestelaColor: #311E8F;
+
 @font-face {
 	font-family: 'HarmonyOS Sans';
 	src:
@@ -49,7 +52,7 @@ body {
 				border: {
 					style: solid;
 					width: 1px;
-					color: #E3E3E3;
+					color: $borderColor;
 					right-width: 0px;
 					top-left-radius: 15px;
 					bottom-left-radius: 15px
@@ -60,7 +63,7 @@ body {
 
 			.el-input-group__append {
 				color: white;
-				background-color: #311E8F;
+				background-color: $zestelaColor;
 				box-shadow: none;
 
 				border: {
@@ -101,7 +104,7 @@ body {
 				border: {
 					style: solid;
 					width: 1px;
-					color: #E3E3E3;
+					color: $borderColor;
 					radius: 15px;
 				}
 
@@ -135,13 +138,13 @@ body {
 		.el-textarea__inner {
 			color: black;
 			border-radius: 15px;
-			border-color: #E3E3E3;
+			border-color: $borderColor;
 			resize: none;
 			height: 35vh;
 			width: 35%;
 			padding: 20px;
 			scrollbar-width: thin;
-			scrollbar-color: #e3e3e3 transparent;
+			scrollbar-color: $borderColor transparent;
 		}
 	}
 
@@ -159,11 +162,13 @@ body {
 			.el-select {
 				.el-select__wrapper {
 					color: black;
-					border-color: #E3E3E3;
+					border-color: $borderColor;
 					border-radius: 15px;
+
 					.el-select__selection span {
-						color:black;
+						color: black;
 					}
+
 					.el-select__suffix i {
 						color: #999999;
 					}
@@ -178,7 +183,7 @@ body {
 
 		.generation-btn {
 			color: white;
-			background-color: #311E8F;
+			background-color: $zestelaColor;
 			border: none;
 			border-radius: 15px;
 			width: 83px;
@@ -210,25 +215,43 @@ body {
 	}
 }
 
-#share-box {
-	display: flex;
-	justify-content: center;
-	flex-shrink:0;
-}
+.el-dialog {
+	border-radius: 15px !important;
+	padding: 20px !important;
 
-#share-inbox {
-	min-width: 100%;
-	border: 1px #E3E3E3 solid;
+	.el-dialog__header {
+		span {
+			font-size: 25px;
+			font-weight: bold;
+		}
+
+		button i {
+			color: black;
+		}
+	}
+
+	.el-dialog__body {
+		.preview-box {
+			display: flex;
+			justify-content: center;
+
+			img {
+				border-radius: 15px;
+				width: 60%;
+			}
+		}
+	}
 }
 
 .share-btn-box {
+	margin-top: 10px;
+	margin-bottom: 10px;
 	display: flex;
 	justify-content: center;
 
 	.share-btn {
-		margin-top: 10px;
 		color: white;
-		background-color: #311E8F;
+		background-color: $zestelaColor;
 		border: none;
 		border-radius: 15px;
 		width: 83px;
@@ -237,13 +260,11 @@ body {
 
 		&:hover {
 			color: white;
-			background-color: #311E8F;
-		}		
+			background-color: $zestelaColor;
+		}
 	}
 }
 
-/* @media screen and (min-width: 1024px) {
-	.el-main div {
-		width:50%;
-	}
-} */
+// .share-box {
+// 	margin-top: 100rem;
+// }

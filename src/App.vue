@@ -34,28 +34,29 @@ import shareView1 from "./views/shareView1.vue";
           <el-option label="样式2" value="shareView2" />
         </el-select>
         <el-select v-model="selectedSize" placeholder="样式大小" size="large" @change="$forceUpdate()">
-          <el-option label="桌面" value="0" />
-          <el-option label="移动" value="1" />
-          <el-option label="迷你" value="2" />
+          <el-option label="全屏幕大小" value="0" />
+          <el-option label="手机大小" value="1" />
+          <el-option label="小尺寸" value="2" />
         </el-select>
       </div>
     </div>
     <div class="generation-btn-box">
-      <el-button class="generation-btn" @click="generation_share">生成</el-button>
+      <el-button class="generation-btn" @click="generationShare">生成</el-button>
     </div>
   </el-main>
-  <el-dialog v-model="showShareDialog" title="Lyrics Share - 请控制您的窗口大小能使海报正常显示" width="80%" @open="open()">
-    <div id="share-box">
-      <div id="share-inbox">
-        <component :is="selectedView" v-show="showView" :name="song_name" :artist="song_artist" :lyrics="song_lyrics"
-          :coverUrl="song_coverUrl" />
-      </div>
+  <el-dialog v-model="showShareDialog" title="预览" width="30%" @open="open()">
+    <div class="preview-box">
+      <img src="" alt="Preview Loading..." ref="previewImg">
     </div>
     <div class="share-btn-box">
       <el-button class="share-btn" @click="saveShare">保存</el-button>
     </div>
+    <el-text class="mx-1" type="info">本页面显示的是低分辨率预览图，保存以获得高分辨率原图。<br>若预览图生成缓慢，请耐心等待。</el-text>
   </el-dialog>
-
+  <div class="share-box" v-show="showView">
+    <component :is="selectedView" :name="song_name" :artist="song_artist" :lyrics="song_lyrics"
+  :coverUrl="song_coverUrl" :size="selectedSize" />
+  </div>
 </template>
 
 <script>
@@ -86,7 +87,7 @@ export default {
       showView: false,
       showSuggestions: false,
       showShareDialog: false,
-      api_url: "https://music.cyrilstudio.top"
+      api_url: "https://music.cyrilstudio.top",
     };
   },
   components: { shareView1 },
@@ -99,7 +100,7 @@ export default {
         let imgGetter = document.createElement("canvas");
         imgGetter.getContext("2d").drawImage(this, 0, 0, 1024, 1024);
         let colorLst = await extractColors(imgGetter.toDataURL("image/jpg"));
-        document.getElementsByClassName("share-body")[0].style.backgroundColor = colorLst[1].hex;
+        document.getElementsByClassName("share-body")[0].style.backgroundColor = colorLst[0].hex;
       }
     }
   },
@@ -133,9 +134,9 @@ export default {
       this.song_artist = this.song_list[index].artist;
       this.showSuggestions = false;
     },
-    async generation_share() {
-      this.showView = true;
+    async generationShare() {
       this.showShareDialog = true;
+      this.showView= true;
     },
     saveShare() {
       html2canvas(document.getElementsByClassName("share-body")[0], { useCORS: true, scale: 2 }).then((canvas) => {
@@ -145,9 +146,11 @@ export default {
       });
     },
     open() {
-      let widthSize = ["100%", "50%", "25%"];
-      // let heightSize = ["100vh", "80vh", "55vh"];
-      document.getElementById("share-inbox").style.minWidth = widthSize[this.selectedSize];
+      html2canvas(document.getElementsByClassName("share-body")[0], { useCORS: true, scale: 0.5 }).then((canvas) => {
+        let img = new Image();
+        img.src = canvas.toDataURL('image/jpeg', 1.0);
+        this.$refs.previewImg.setAttribute("src", img.src);
+      });
     }
   },
   mounted() { },

@@ -1,15 +1,63 @@
-<script setup>
-defineProps({
-  name: String,
-  artist: String,
-  coverUrl: String,
-  lyrics: String
-});
+<script>
+
+export default {
+    props: {
+      name: String,
+      artist: String,
+      coverUrl: String,
+      lyrics: String,
+      size: String
+    },
+    data() {
+      return {
+        shareBodyWidth: "100%",
+        shareBodyHeight: "100vh",
+        mainCardWidth: "35%"
+      }
+    },
+    created () {
+      if (this.size == "0") {
+          this.shareBodyWidth = "100%";
+          this.mainCardWidth = "35%";
+          this.shareBodyHeight = "100vh";
+        }
+        else if (this.size == "1") {
+          this.shareBodyWidth = "680px";
+          this.mainCardWidth = "50%";
+          this.shareBodyHeight = "90vh";
+        }
+        else {
+          this.shareBodyWidth = "300px";
+          this.mainCardWidth = "80%";
+          this.shareBodyHeight = "80vh";
+        }
+    },
+    watch: {
+      size() {
+        if (this.size == "0") {
+          this.shareBodyWidth = "100%";
+          this.mainCardWidth = "35%";
+          this.shareBodyHeight = "100vh";
+        }
+        else if (this.size == "1") {
+          this.shareBodyWidth = "680px";
+          this.mainCardWidth = "50%";
+          this.shareBodyHeight = "90vh";
+        }
+        else {
+          this.shareBodyWidth = "300px";
+          this.mainCardWidth = "80%";
+          this.shareBodyHeight = "unset";
+        }
+      }
+    }
+}
+
 </script>
 
 <template>
-  <div class="share-body">
-    <div class="main-card">
+  <div class="share-body" ref="shareBody">
+    <div class="main-card" ref="mainCard">
       <div class="lyrics-card">
         <div v-html="lyrics"></div>
       </div>
@@ -28,7 +76,10 @@ defineProps({
 <style lang="scss">
 .share-body {
   margin: 0;
-  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: v-bind(shareBodyWidth);
+  height: v-bind(shareBodyHeight);
   backdrop-filter: blur(30px);
   display: flex;
   justify-content: center;
@@ -40,7 +91,7 @@ defineProps({
 
   .main-card {
     z-index: 100;
-    width: 50%;
+    width: v-bind(mainCardWidth);
     height: max-content;
     backdrop-filter: blur(30px);
 
@@ -75,14 +126,6 @@ defineProps({
         margin-bottom: 0;
       }
     }
-  }
-}
-
-
-
-@media screen and (min-width: 1024px) {
-  .main-card {
-    width: 25%;
   }
 }
 </style>
