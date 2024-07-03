@@ -1,0 +1,12 @@
+.el-header {
+	height: 18vh !important;
+	border: none;
+	background-color: white;
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	* {
+		user-select: none;
+		height: min-content;
+	}
+}

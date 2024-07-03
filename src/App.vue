@@ -19,13 +19,13 @@ import shareView2 from "./views/shareView2.vue";
     </div>
     <div class="info-box">
       <div class="info-flexbox">
-        <img :src="song_coverUrl" draggable="false" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
+        <img draggable="false" :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
         <el-tooltip content="可自行修改歌名、艺术家与歌词" placement="right" effect="light" :visible="showTip">
-        <div class="info-inbox">
-          <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input" />
-          <el-input v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
-        </div>
-      </el-tooltip>
+          <div class="info-inbox">
+            <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input" />
+            <el-input v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
+          </div>
+        </el-tooltip>
       </div>
     </div>
     <el-input v-model="song_lyrics" rows="15" type="textarea" placeholder="歌曲歌词" class="lyrics-input" />
@@ -47,6 +47,15 @@ import shareView2 from "./views/shareView2.vue";
       <el-button class="generation-btn" @click="generationShare">生成</el-button>
     </div>
   </el-main>
+  <el-footer>
+    <div class="settings-box">
+      <div class="mb-4">
+        <el-button @click="showSettingsDialog = true;" type="primary" link>
+          设置
+        </el-button>
+      </div>
+    </div>
+  </el-footer>
   <el-dialog v-model="showShareDialog" title="预览" @open="open()">
     <div class="preview-box">
       <img src="" alt="Preview Loading..." ref="previewImg">
@@ -60,9 +69,31 @@ import shareView2 from "./views/shareView2.vue";
     </div>
     <el-text class="mx-1" type="info">本页面显示的是低分辨率预览图，保存以获得高分辨率原图。<br>若预览图生成缓慢，请耐心等待。</el-text>
   </el-dialog>
+  <el-dialog v-model="showSettingsDialog" title="设置">
+      <div class="api-input-box">
+        <el-text class="mx-1" size="large">API 地址</el-text>
+        <el-input v-model="api_url" placeholder="API 地址" />
+      </div>
+      <div>
+        <el-select v-model="selectedPreviewSize" placeholder="预览图生成倍数" size="large" @change="$forceUpdate()">
+          <el-option label="0.1x" value="0.1" />
+          <el-option label="0.5x" value="0.5" />
+          <el-option label="1.0x" value="1.0" />
+        </el-select>
+      </div>
+      <div>
+        <el-select v-model="selectedGenerateSize" placeholder="保存图生成倍数" size="large" @change="$forceUpdate()">
+          <el-option label="0.5x" value="0.5" />
+          <el-option label="1.0x" value="1" />
+          <el-option label="2.0x" value="2" />
+          <el-option label="4.0x" value="4" />
+        </el-select>
+      </div>
+      <div class="share-btn-box"><el-button class="share-btn" @click="saveSettings">保存</el-button></div>
+    </el-dialog>
   <div class="share-box" v-show="showView">
     <component :is="selectedView" :name="song_name" :artist="song_artist" :lyrics="song_lyrics"
-  :coverUrl="song_coverUrl" :size="selectedSize" :bgdColor="bgdColor" />
+      :coverUrl="song_coverUrl" :size="selectedSize" :bgdColor="bgdColor" />
   </div>
 </template>
 
@@ -94,16 +125,19 @@ export default {
       showView: false,
       showTip: true,
       showSuggestions: false,
+      showSettingsDialog: false,
       showShareDialog: false,
       api_url: "https://music.cyrilstudio.top",
       bgdColor: "",
       selectedText: {
         style: "样式1",
         size: "全屏幕大小"
-      }
+      },
+      selectedPreviewSize: "0.5",
+      selectedGenerateSize: "2"
     };
   },
-  components: { shareView1,shareView2 },
+  components: { shareView1, shareView2 },
   watch: {
     song_coverUrl() {
       let imgElement = new Image();
@@ -119,8 +153,8 @@ export default {
   },
   methods: {
     async search_song() {
-      if(this.search_name == "")
-        return ;
+      if (this.search_name == "")
+        return;
       this.showTip = false;
       this.song_list = this.song_list.slice(0, 0);
       let response = await getJSON(
@@ -155,26 +189,38 @@ export default {
         return;
       this.showShareDialog = true;
       this.showView = true;
-      let selectedTextStyles = ["","样式1","样式2"];
-      let selectedTextSizes = ["全屏幕大小","手机大小","小尺寸"]
+      let selectedTextStyles = ["", "样式1", "样式2"];
+      let selectedTextSizes = ["全屏幕大小", "手机大小", "小尺寸"]
       this.selectedText.size = selectedTextSizes[this.selectedSize];
       this.selectedText.style = selectedTextStyles[this.selectedView.split("w")[1]]
     },
     saveShare() {
-      html2canvas(document.getElementsByClassName("share-body")[0], { useCORS: true, scale: 2 }).then((canvas) => {
+      html2canvas(document.getElementsByClassName("share-body")[0], { useCORS: true, scale: this.selectedGenerateSize }).then((canvas) => {
         let img = new Image();
         img.src = canvas.toDataURL('image/jpeg', 1.0);
         window.open('', '_blank').document.write(img.outerHTML);
       });
     },
     open() {
-      html2canvas(document.getElementsByClassName("share-body")[0], { useCORS: true, scale: 0.5 }).then((canvas) => {
+      html2canvas(document.getElementsByClassName("share-body")[0], { useCORS: true, scale: this.selectedPreviewSize }).then((canvas) => {
         let img = new Image();
         img.src = canvas.toDataURL('image/jpeg', 1.0);
         this.$refs.previewImg.setAttribute("src", img.src);
       });
+    },
+    saveSettings() {
+      localStorage.setItem('apiUrl', this.api_url);
+      localStorage.setItem('selectedGenerateSize', this.selectedGenerateSize);
+      localStorage.setItem('selectedPreviewSize', this.selectedPreviewSize);
+      this.showSettingsDialog = false;
     }
   },
-  mounted() { },
+  mounted() {
+    if (localStorage.getItem('apiUrl') != null && localStorage.getItem('selectedGenerateSize') != null && localStorage.getItem('selectedPreviewSize') != null) {
+      this.api_url = localStorage.getItem('apiUrl');
+      this.selectedGenerateSize = localStorage.getItem('selectedGenerateSize');
+      this.selectedPreviewSize = localStorage.getItem('selectedPreviewSize');
+    }
+  },
 };
 </script>

@@ -1,0 +1,69 @@
+@media screen and (max-width: 600px) {
+	#search_suggestions {
+		width: 90%;
+	}
+
+	.el-popper[role="tooltip"] {
+		display: none;
+	}
+
+	.el-dialog {
+		--el-dialog-width: 95% !important;
+
+		.el-dialog__body {
+			.preview-box {
+				img {
+					width: 70%;
+				}
+			}
+		}
+	}
+
+	.el-main {
+		margin: {
+			top: 4vh;
+			bottom: 4vh;
+		}
+
+		.search-box {
+			.el-input {
+				width: 97%;
+			}
+
+			.el-input-group__append {
+				padding-left: 20px !important;
+				padding-right: 20px !important;
+
+			}
+
+		}
+
+		.info-box {
+			.info-flexbox {
+				width: 97%;
+				.info-inbox {
+					.el-input {
+						width: 97%;
+					}
+				}
+			}
+		}
+
+
+		.lyrics-input {
+			.el-textarea__inner {
+				width: 97%;
+			}
+		}
+
+		.select-box {
+			.select-inbox {
+				width: 97%;
+			}
+		}
+
+		.info-inbox .el-input {
+			width: 80% !important;
+		}
+	}
+}

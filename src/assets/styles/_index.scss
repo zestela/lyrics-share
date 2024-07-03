@@ -1,0 +1,25 @@
+@use "header";
+@use "main";
+@use "media";
+
+@font-face {
+	font-family: 'HarmonyOS Sans';
+	src:
+		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Medium.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: 'HarmonyOS Sans';
+	src:
+		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Bold.woff2") format("woff2");
+	font-weight: bold;
+}
+
+* {
+	font-family: "HarmonyOS Sans";
+}
+
+body {
+	overflow-x: visible;
+	margin: 0;
+}

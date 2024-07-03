@@ -1,0 +1,300 @@
+@use "color";
+
+.el-main {
+	margin: {
+		top: 4vh;
+		bottom: 4vh;
+	}
+
+	.search-box {
+		display: flex;
+		justify-content: center;
+
+		.el-input {
+			width: 40%;
+			height: 40px;
+			border-radius: 15px;
+			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
+
+			.is-focus {
+				border-color: var(--el-input-focus-border-color) !important;
+			}
+
+			.el-input__wrapper {
+				&:hover {
+					border-color: var(--el-input-hover-border-color);
+				}
+
+				box-shadow: none;
+
+				border: {
+					style: solid;
+					width: 1px;
+					color: color.$borderColor;
+					right-width: 0px;
+					top-left-radius: 15px;
+					bottom-left-radius: 15px
+				}
+
+				;
+			}
+
+			.el-input-group__append {
+				color: white;
+				background-color: color.$zestelaColor;
+				box-shadow: none;
+				padding-left: 30px;
+				padding-right: 30px;
+
+				border: {
+					top-right-radius: 15px;
+					bottom-right-radius: 15px
+				}
+
+				;
+			}
+		}
+	}
+
+	.info-box {
+		margin-top: 15px;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: center;
+		flex-wrap: nowrap;
+
+		.info-flexbox {
+			width: 40%;
+			display: flex;
+			flex-wrap: nowrap;
+
+			img {
+				border-radius: 15px;
+			}
+
+			.info-inbox {
+				margin-left: 15px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-wrap: wrap;
+				flex: 1;
+				height: 87px;
+
+				border: {
+					style: solid;
+					width: 1px;
+					color: color.$borderColor;
+					radius: 15px;
+				}
+
+				;
+
+				.song-name-input .el-input__wrapper .el-input__inner {
+					font-weight: bold;
+				}
+
+				.el-input {
+					width: 90%;
+
+					.el-input__wrapper {
+						font-size: 20px;
+						padding: 0;
+						box-shadow: none;
+
+						.el-input__inner {
+							color: black;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.lyrics-input {
+		display: flex;
+		justify-content: center;
+
+		.el-textarea__inner {
+			color: black;
+			border-radius: 15px;
+			border-color: color.$borderColor;
+			resize: none;
+			height: 30vh;
+			width: 40%;
+			padding: 20px;
+			scrollbar-width: thin;
+			scrollbar-color: color.$borderColor transparent;
+		}
+	}
+
+	.select-box {
+		display: flex;
+		justify-content: center;
+		margin-top: 15px;
+		margin-bottom: 25px;
+
+		.select-inbox {
+			width: 40%;
+			display: flex;
+			flex-wrap: nowrap;
+		}
+	}
+
+	.generation-btn-box {
+		display: flex;
+		justify-content: center;
+
+		.generation-btn {
+			color: white;
+			background-color: color.$zestelaColor;
+			border: none;
+			border-radius: 15px;
+			width: 83px;
+			height: 36px;
+			font-size: 16px !important;
+		}
+	}
+}
+
+#search_suggestions {
+	width: 40%;
+	height: 346px;
+	position: absolute;
+	margin-top: 50px;
+	z-index: 1;
+	border-radius: 15px;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
+
+	.el-card__body {
+		flex-wrap: wrap;
+		--el-card-padding: 12px !important;
+
+		.el-button {
+			display: block;
+			border: none;
+			margin: 0 !important;
+			width: 100%;
+			text-align: start;
+		}
+	}
+}
+
+.el-dialog {
+	border-radius: 15px !important;
+	padding: 20px !important;
+	--el-dialog-width: 35% !important;
+
+
+	.el-dialog__header {
+		span {
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		button i {
+			color: black;
+		}
+	}
+
+	.el-dialog__body {
+		.preview-box {
+			display: flex;
+			justify-content: center;
+
+			img {
+				border-radius: 15px;
+				width: 60%;
+			}
+		}
+	}
+}
+
+.share-btn-box {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
+
+	.share-btn {
+		color: white;
+		background-color: color.$zestelaColor;
+		border: none;
+		border-radius: 15px;
+		width: 83px;
+		height: 36px;
+		font-size: 16px !important;
+
+		&:hover {
+			color: white;
+			background-color: color.$zestelaColor;
+		}
+	}
+}
+
+.preview-info-box {
+	margin-top: 10px;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	* {
+		color: black !important;
+		text-align: center;
+		width: 100%;
+	}
+}
+
+.el-popper {
+	border-radius: 15px !important;
+	border-color: color.$borderColor !important;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07) !important;
+}
+
+.el-select__popper {
+	.el-popper__arrow {
+		display: none;
+	}
+}
+
+// 调试时将本样式注释
+.share-box {
+	z-index: -5;
+  	position: fixed;
+  	bottom: -500vh;
+}
+// 可实时预览海报生成
+
+.settings-box {
+	display: flex;
+	justify-content: center;
+	div .el-button span {
+		color: #878787;
+	}
+}
+
+.api-input-box {
+	* {
+		float: left;
+	}
+}
+
+.el-select {
+	.el-select__wrapper {
+		color: black;
+		border-color: color.$borderColor;
+		border-radius: 15px;
+
+		.el-select__selection span {
+			color: black;
+		}
+
+		.el-select__suffix i {
+			color: #999999;
+		}
+	}
+}
+
+::selection {
+    background: color.$zestelaColor; /* 粉红色的底色 */
+    color: white; /* 文字的颜色 */
+}
