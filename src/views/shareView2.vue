@@ -55,7 +55,7 @@ export default {
       <div class="info-inbox">
         <div class="texts-and-cover">
           <img class="cover-img" draggable="false" ref="coverImg" :src="coverUrl">
-          <div style="margin-left: 15px;">
+          <div style="margin-left: 15px;line-height: 1;">
             <div class="name-text" v-text="name"></div>
             <div class="artist-text" v-text="artist"></div>
           </div>
