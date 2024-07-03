@@ -33,8 +33,8 @@ import shareView2 from "./views/shareView2.vue";
       <div class="select-inbox">
         <el-select v-model="selectedView" placeholder="海报样式" size="large" @change="$forceUpdate()"
           style="margin-right: 20px;">
-          <el-option label="样式1" value="shareView1" />
-          <el-option label="样式2" value="shareView2" />
+          <el-option label="缤纷样式" value="shareView1" />
+          <el-option label="简洁样式" value="shareView2" />
         </el-select>
         <el-select class="select-2" v-model="selectedSize" placeholder="样式大小" size="large" @change="$forceUpdate()">
           <el-option label="全屏幕大小" value="0" />
@@ -132,7 +132,7 @@ export default {
       api_url: "https://music.cyrilstudio.top",
       bgdColor: "",
       selectedText: {
-        style: "样式1",
+        style: "缤纷样式",
         size: "全屏幕大小"
       },
       selectedPreviewSize: "0.5",
@@ -191,7 +191,7 @@ export default {
         return;
       this.showShareDialog = true;
       this.showView = true;
-      let selectedTextStyles = ["", "样式1", "样式2"];
+      let selectedTextStyles = ["", "缤纷样式", "简洁样式"];
       let selectedTextSizes = ["全屏幕大小", "手机大小", "小尺寸"]
       this.selectedText.size = selectedTextSizes[this.selectedSize];
       this.selectedText.style = selectedTextStyles[this.selectedView.split("w")[1]]
