@@ -17,7 +17,7 @@ import shareView2 from "./views/shareView2.vue";
           content.artist }}</el-button>
       </el-card>
     </div>
-    <div class="info-box">
+    <div v-show="showMainUI" class="info-box">
       <div class="info-flexbox">
         <img draggable="false" :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
         <el-tooltip content="可自行修改歌名、艺术家与歌词" placement="right" effect="light" :visible="showTip" auto-close="5000">
@@ -28,8 +28,8 @@ import shareView2 from "./views/shareView2.vue";
         </el-tooltip>
       </div>
     </div>
-    <el-input v-model="song_lyrics" rows="15" type="textarea" placeholder="歌曲歌词" class="lyrics-input" />
-    <div class="select-box">
+    <el-input v-show="showMainUI" v-model="song_lyrics" rows="15" type="textarea" placeholder="歌曲歌词" class="lyrics-input" />
+    <div v-show="showMainUI" class="select-box">
       <div class="select-inbox">
         <el-select v-model="selectedView" placeholder="海报样式" size="large" @change="$forceUpdate()"
           style="margin-right: 20px;">
@@ -43,7 +43,7 @@ import shareView2 from "./views/shareView2.vue";
         </el-select>
       </div>
     </div>
-    <div class="generation-btn-box">
+    <div v-show="showMainUI" class="generation-btn-box">
       <el-button class="generation-btn" @click="generationShare">生成</el-button>
     </div>
   </el-main>
@@ -126,6 +126,7 @@ export default {
       selectedSize: "0",
       showView: false,
       showTip: false,
+      showMainUI: false,
       showSuggestions: false,
       showSettingsDialog: false,
       showShareDialog: false,
@@ -176,6 +177,7 @@ export default {
     async setInfo(index) {
       if (document.documentElement.clientWidth > 600)
         this.showTip = true;
+      this.showMainUI = true;
       this.song_name = this.song_list[index].name;
       let response = await getJSON(
         this.api_url + "/lyric?id=" + this.song_list[index].id

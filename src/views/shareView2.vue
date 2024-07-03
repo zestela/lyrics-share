@@ -29,8 +29,8 @@ export default {
   methods: {
     applyStyle() {
       if (this.size == "0") {
-        this.shareBodyWidth = "960px";
-        this.shareBodyMinHeight = "540px";
+        this.shareBodyWidth = "1920px";
+        this.shareBodyMinHeight = "1080px";
       }
       else if (this.size == "1") {
         this.shareBodyWidth = "540px";
