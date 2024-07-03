@@ -20,7 +20,7 @@ import shareView2 from "./views/shareView2.vue";
     <div class="info-box">
       <div class="info-flexbox">
         <img draggable="false" :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
-        <el-tooltip content="可自行修改歌名、艺术家与歌词" placement="right" effect="light" :visible="showTip">
+        <el-tooltip content="可自行修改歌名、艺术家与歌词" placement="right" effect="light" :visible="showTip" auto-close="5000">
           <div class="info-inbox">
             <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input" />
             <el-input v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
@@ -70,29 +70,29 @@ import shareView2 from "./views/shareView2.vue";
     <el-text class="mx-1" type="info">本页面显示的是低分辨率预览图，保存以获得高分辨率原图。<br>若预览图生成缓慢，请耐心等待。</el-text>
   </el-dialog>
   <el-dialog v-model="showSettingsDialog" title="设置">
-      <div class="api-input-box">
-        <el-text class="mx-1">API 地址</el-text>
-        <el-input v-model="api_url" placeholder="API 地址" />
-      </div>
-      <div class="setting-item">
-        <el-text class="mx-1">预览图生成倍数</el-text>
-        <el-select v-model="selectedPreviewSize" placeholder="预览图生成倍数" size="large" @change="$forceUpdate()">
-          <el-option label="0.1x" value="0.1" />
-          <el-option label="0.5x" value="0.5" />
-          <el-option label="1.0x" value="1.0" />
-        </el-select>
-      </div>
-      <div class="setting-item">
-        <el-text class="mx-1">保存图生成倍数</el-text>
-        <el-select v-model="selectedGenerateSize" placeholder="保存图生成倍数" size="large" @change="$forceUpdate()">
-          <el-option label="0.5x" value="0.5" />
-          <el-option label="1.0x" value="1" />
-          <el-option label="2.0x" value="2" />
-          <el-option label="4.0x" value="4" />
-        </el-select>
-      </div>
-      <div class="share-btn-box"><el-button class="share-btn" @click="saveSettings">保存</el-button></div>
-    </el-dialog>
+    <div class="api-input-box">
+      <el-text class="mx-1">API 地址</el-text>
+      <el-input v-model="api_url" placeholder="API 地址" />
+    </div>
+    <div class="setting-item">
+      <el-text class="mx-1">预览图生成倍数</el-text>
+      <el-select v-model="selectedPreviewSize" placeholder="预览图生成倍数" size="large" @change="$forceUpdate()">
+        <el-option label="0.1x" value="0.1" />
+        <el-option label="0.5x" value="0.5" />
+        <el-option label="1.0x" value="1.0" />
+      </el-select>
+    </div>
+    <div class="setting-item">
+      <el-text class="mx-1">保存图生成倍数</el-text>
+      <el-select v-model="selectedGenerateSize" placeholder="保存图生成倍数" size="large" @change="$forceUpdate()">
+        <el-option label="0.5x" value="0.5" />
+        <el-option label="1.0x" value="1" />
+        <el-option label="2.0x" value="2" />
+        <el-option label="4.0x" value="4" />
+      </el-select>
+    </div>
+    <div class="share-btn-box"><el-button class="share-btn" @click="saveSettings">保存</el-button></div>
+  </el-dialog>
   <div class="share-box" v-show="showView">
     <component :is="selectedView" :name="song_name" :artist="song_artist" :lyrics="song_lyrics"
       :coverUrl="song_coverUrl" :size="selectedSize" :bgdColor="bgdColor" />
@@ -125,7 +125,7 @@ export default {
       selectedView: "shareView1",
       selectedSize: "0",
       showView: false,
-      showTip: true,
+      showTip: false,
       showSuggestions: false,
       showSettingsDialog: false,
       showShareDialog: false,
@@ -174,6 +174,8 @@ export default {
       this.showSuggestions = true;
     },
     async setInfo(index) {
+      if (document.documentElement.clientWidth > 600)
+        this.showTip = true;
       this.song_name = this.song_list[index].name;
       let response = await getJSON(
         this.api_url + "/lyric?id=" + this.song_list[index].id
