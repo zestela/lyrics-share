@@ -67,10 +67,14 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+@import url('https://fonts.loli.net/css2?family=Noto+Serif+SC&display=swap');
+@import url('https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300&display=swap');
+
+
 .share-body {
   * {
     user-select: none;
-    font-family: "SourceHan" !important;
+    font-family: "Noto Serif SC" !important;
   }
 
   margin: 0;

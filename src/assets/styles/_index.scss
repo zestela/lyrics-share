@@ -5,27 +5,14 @@
 @font-face {
 	font-family: 'HarmonyOS Sans';
 	src:
-		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Medium.woff2") format("woff2");
+		url("https://jsdelivr.pai233.top/gh/IKKI2000/harmonyos-fonts/fonts/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Medium.woff2") format("woff2");
 }
 
 @font-face {
 	font-family: 'HarmonyOS Sans';
 	src:
-		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Bold.woff2") format("woff2");
+		url("https://jsdelivr.pai233.top/gh/IKKI2000/harmonyos-fonts/fonts/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Bold.woff2") format("woff2");
 	font-weight: bold;
-}
-
-@font-face {
-	font-family: 'SourceHan';
-	src:
-		url("/SourceHanSC/SourceHanSerifSC-Regular.otf");
-}
-
-@font-face {
-	font-family: 'SourceHan';
-	src:
-		url("/SourceHanSC/SourceHanSerifSC-Light.otf");
-	font-weight: lighter;
 }
 
 * {
