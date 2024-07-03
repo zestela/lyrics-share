@@ -2,8 +2,8 @@
 
 .el-main {
 	margin: {
-		top: 4vh;
-		bottom: 4vh;
+		top: 3vh;
+		bottom: 3vh;
 	}
 
 	.search-box {
@@ -257,11 +257,11 @@
 }
 
 // 调试时将本样式注释
-.share-box {
-	z-index: -5;
-  	position: fixed;
-  	bottom: -500vh;
-}
+//.share-box {
+	//z-index: -5;
+  	//position: fixed;
+  //	bottom: -500vh;
+//}
 // 可实时预览海报生成
 
 .settings-box {
@@ -273,8 +273,39 @@
 }
 
 .api-input-box {
-	* {
-		float: left;
+
+	.el-input {
+		margin-top: 5px;
+		height: 40px;
+		.is-focus {
+			border-color: var(--el-input-focus-border-color) !important;
+		}
+		.el-input__wrapper {
+			&:hover {
+				border-color: var(--el-input-hover-border-color);
+			}
+			box-shadow: none;
+			border: {
+				style: solid;
+				width: 1px;
+				color: color.$borderColor;
+				right-width: 0px;
+				top-left-radius: 15px;
+				bottom-right-radius: 15px;
+				top-right-radius: 15px;
+				bottom-left-radius: 15px;
+			}
+
+			;
+		}
+	}
+
+}
+
+.setting-item {
+	margin-top: 15px;
+	.el-select {
+		margin-top: 5px;
 	}
 }
 
@@ -297,4 +328,8 @@
 ::selection {
     background: color.$zestelaColor; /* 粉红色的底色 */
     color: white; /* 文字的颜色 */
+}
+
+.unable-item {
+	pointer-events: none;
 }

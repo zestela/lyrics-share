@@ -36,7 +36,7 @@ import shareView2 from "./views/shareView2.vue";
           <el-option label="样式1" value="shareView1" />
           <el-option label="样式2" value="shareView2" />
         </el-select>
-        <el-select v-model="selectedSize" placeholder="样式大小" size="large" @change="$forceUpdate()">
+        <el-select class="select-2" v-model="selectedSize" placeholder="样式大小" size="large" @change="$forceUpdate()">
           <el-option label="全屏幕大小" value="0" />
           <el-option label="手机大小" value="1" />
           <el-option label="小尺寸" value="2" />
@@ -71,17 +71,19 @@ import shareView2 from "./views/shareView2.vue";
   </el-dialog>
   <el-dialog v-model="showSettingsDialog" title="设置">
       <div class="api-input-box">
-        <el-text class="mx-1" size="large">API 地址</el-text>
+        <el-text class="mx-1">API 地址</el-text>
         <el-input v-model="api_url" placeholder="API 地址" />
       </div>
-      <div>
+      <div class="setting-item">
+        <el-text class="mx-1">预览图生成倍数</el-text>
         <el-select v-model="selectedPreviewSize" placeholder="预览图生成倍数" size="large" @change="$forceUpdate()">
           <el-option label="0.1x" value="0.1" />
           <el-option label="0.5x" value="0.5" />
           <el-option label="1.0x" value="1.0" />
         </el-select>
       </div>
-      <div>
+      <div class="setting-item">
+        <el-text class="mx-1">保存图生成倍数</el-text>
         <el-select v-model="selectedGenerateSize" placeholder="保存图生成倍数" size="large" @change="$forceUpdate()">
           <el-option label="0.5x" value="0.5" />
           <el-option label="1.0x" value="1" />
