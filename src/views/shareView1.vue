@@ -31,17 +31,17 @@ export default {
         applyStyle() {
           if (this.size == "0") {
             this.shareBodyWidth = "1920px";
-            this.mainCardWidth = "35%";
-            this.shareBodyMinHeight = "100vh";
+            this.mainCardWidth = "18%";
+            this.shareBodyMinHeight = "1080px";
           }
           else if (this.size == "1") {
             this.shareBodyWidth = "540px";
-            this.mainCardWidth = "50%";
+            this.mainCardWidth = "80%";
             this.shareBodyMinHeight = "960px";
           }
           else {
             this.shareBodyWidth = "400px";
-            this.mainCardWidth = "80%";
+            this.mainCardWidth = "90%";
             this.shareBodyMinHeight = "400px";
           }
         } 
@@ -54,14 +54,14 @@ export default {
   <div class="share-body" ref="shareBody">
     <div class="main-card" ref="mainCard">
       <div class="lyrics-card">
-        <div v-html="lyrics"></div>
+        <div class="lyrics" v-html="lyrics"></div>
       </div>
       <div class="info-card">
-        <img draggable="false" ref="coverImg" :src="coverUrl">
+        <img class="cover-img" draggable="false" ref="coverImg" :src="coverUrl">
         <div>
-          <div v-text="name"></div>
-          <div v-text="artist"></div>
-          <img draggable="false" src="/view-logo-1.png" width="80" alt="Lyrics Share Logo">
+          <div class="name-text" v-text="name"></div>
+          <div class="artist-text" v-text="artist"></div>
+          <img class="logo-img" draggable="false" src="/view-logo-1.png" width="90" alt="Lyrics Share Logo">
         </div>
       </div>
     </div>
@@ -86,6 +86,8 @@ export default {
 
   color: white;
   font-family: "HarmonyOS Sans";
+  font-weight: bold;
+  font-size: 17px;
 
   .main-card {
     z-index: 100;
@@ -93,32 +95,50 @@ export default {
     height: max-content;
     backdrop-filter: blur(30px);
 
+    .lyrics-card{
+      .lyrics {
+        line-height: 1.4em;
+      }
+    }
+
     .info-card {
-      background-color: rgba(88, 88, 88, 0.4);
+      background-color: rgba(0, 0, 0, 0.4);
       margin: 0;
       padding: 20px;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
       display: flex;
       justify-content: left;
       align-items: center;
 
-      img {
+      .cover-img {
         width: 4rem;
-        border-radius: 5px;
+        border-radius: 8px;
       }
 
       div * {
-        margin-left: 10px;
+        margin-left: 15px;
       }
+
+      .artist-text {
+        margin-top: 2px;
+        color: rgba(255,255,255,0.85);
+      }
+      
+      .logo-img {
+        margin-top: -10px;
+        opacity: 0.75;
+        width: 90px !important;
+      }
+
     }
 
     .lyrics-card {
-      background-color: rgba(88, 88, 88, 0.25);
+      background-color: rgba(0, 0, 0, 0.25);
       margin: 0;
       padding: 20px;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
       white-space: break-spaces;
 
       * {

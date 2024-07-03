@@ -19,7 +19,7 @@ import shareView2 from "./views/shareView2.vue";
     </div>
     <div class="info-box">
       <div class="info-flexbox">
-        <img :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
+        <img :src="song_coverUrl" draggable="false" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
         <el-tooltip content="可自行修改歌名、艺术家与歌词" placement="right" effect="light" :visible="showTip">
         <div class="info-inbox">
           <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input" />

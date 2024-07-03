@@ -13,9 +13,14 @@ $zestelaColor: #311E8F;
 @font-face {
 	font-family: 'HarmonyOS Sans';
 	src:
-		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Medium.woff2") format("woff2"),
-		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Bold.woff2") format("woff2"),
-		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Black.woff2") format("woff2");
+		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Medium.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: 'HarmonyOS Sans';
+	src:
+		url("/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Bold.woff2") format("woff2");
+	font-weight: bold;
 }
 
 * {
@@ -372,4 +377,9 @@ body {
 	.el-popper__arrow {
 		display: none;
 	}
+}
+
+::selection {
+    background: $zestelaColor; /* 粉红色的底色 */
+    color: white; /* 文字的颜色 */
 }
