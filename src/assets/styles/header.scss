@@ -1,12 +1,13 @@
 .el-header {
-	height: 16vh !important;
-	border: none;
-	background-color: white;
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
-	* {
-		user-select: none;
-		height: min-content;
-	}
+  height: 16vh !important;
+  border: none;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  * {
+    user-select: none;
+    height: min-content;
+  }
 }

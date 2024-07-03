@@ -1,53 +1,49 @@
 <script>
-
 export default {
-    props: {
-      name: String,
-      artist: String,
-      coverUrl: String,
-      lyrics: String,
-      size: String,
-      bgdColor: String
-    },
-    data() {
-      return {
-        shareBodyWidth: "100%",
-        shareBodyMinHeight: "100vh",
-        mainCardWidth: "35%"
-      }
-    },
-    created () {
+  props: {
+    name: String,
+    artist: String,
+    coverUrl: String,
+    lyrics: String,
+    size: String,
+    bgdColor: String,
+  },
+  data() {
+    return {
+      shareBodyWidth: '100%',
+      shareBodyMinHeight: '100vh',
+      mainCardWidth: '35%',
+    };
+  },
+  created() {
+    this.applyStyle();
+  },
+  watch: {
+    size() {
       this.applyStyle();
     },
-    watch: {
-      size() {
-        this.applyStyle();
-      },
-      coverUrl() {
-        this.$refs.coverImg.src = this.coverUrl;
+    coverUrl() {
+      this.$refs.coverImg.src = this.coverUrl;
+    },
+  },
+  methods: {
+    applyStyle() {
+      if (this.size === '0') {
+        this.shareBodyWidth = '1920px';
+        this.mainCardWidth = '18%';
+        this.shareBodyMinHeight = '1080px';
+      } else if (this.size === '1') {
+        this.shareBodyWidth = '540px';
+        this.mainCardWidth = '80%';
+        this.shareBodyMinHeight = '960px';
+      } else {
+        this.shareBodyWidth = '400px';
+        this.mainCardWidth = '90%';
+        this.shareBodyMinHeight = '400px';
       }
     },
-    methods: {
-        applyStyle() {
-          if (this.size == "0") {
-            this.shareBodyWidth = "1920px";
-            this.mainCardWidth = "18%";
-            this.shareBodyMinHeight = "1080px";
-          }
-          else if (this.size == "1") {
-            this.shareBodyWidth = "540px";
-            this.mainCardWidth = "80%";
-            this.shareBodyMinHeight = "960px";
-          }
-          else {
-            this.shareBodyWidth = "400px";
-            this.mainCardWidth = "90%";
-            this.shareBodyMinHeight = "400px";
-          }
-        } 
-    }
-}
-
+  },
+};
 </script>
 
 <template>
@@ -57,11 +53,22 @@ export default {
         <div class="lyrics" v-html="lyrics"></div>
       </div>
       <div class="info-card">
-        <img class="cover-img" draggable="false" ref="coverImg" :src="coverUrl">
+        <img
+          class="cover-img"
+          draggable="false"
+          ref="coverImg"
+          :src="coverUrl"
+        />
         <div>
           <div class="name-text" v-text="name"></div>
           <div class="artist-text" v-text="artist"></div>
-          <img class="logo-img" draggable="false" src="/view-logo-1.png" width="90" alt="Lyrics Share Logo">
+          <img
+            class="logo-img"
+            draggable="false"
+            src="/view-logo-1.png"
+            width="90"
+            alt="Lyrics Share Logo"
+          />
         </div>
       </div>
     </div>
@@ -73,6 +80,7 @@ export default {
   * {
     user-select: none;
   }
+
   margin: 0;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -85,7 +93,7 @@ export default {
   align-items: center;
 
   color: white;
-  font-family: "HarmonyOS Sans";
+  font-family: 'HarmonyOS Sans', sans-serif;
   font-weight: bold;
   font-size: 17px;
 
@@ -95,7 +103,7 @@ export default {
     height: max-content;
     backdrop-filter: blur(30px);
 
-    .lyrics-card{
+    .lyrics-card {
       .lyrics {
         line-height: 1.4em;
       }
@@ -122,15 +130,14 @@ export default {
 
       .artist-text {
         margin-top: 2px;
-        color: rgba(255,255,255,0.85);
+        color: rgba(255, 255, 255, 0.85);
       }
-      
+
       .logo-img {
         margin-top: -10px;
         opacity: 0.75;
         width: 90px !important;
       }
-
     }
 
     .lyrics-card {
