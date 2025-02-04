@@ -1,7 +1,4 @@
 @media screen and (max-width: 640px) {
-  #search_suggestions {
-    width: 90%;
-  }
 
   .el-dialog {
     --el-dialog-width: 95% !important;
@@ -33,6 +30,15 @@
       }
     }
 
+    .lyrics {
+      .el-card {
+        width: 97% !important;
+      }
+      .lyrics-selector-box {
+        width: 97% !important;
+      }
+    }
+
     .info-box {
       .info-flexbox {
         width: 97%;
@@ -42,12 +48,6 @@
             width: 97%;
           }
         }
-      }
-    }
-
-    .lyrics-input {
-      .el-textarea__inner {
-        width: 97%;
       }
     }
 
@@ -69,9 +69,6 @@
 }
 
 @media screen and (min-width: 640px) and (max-width: 1000px) {
-  #search_suggestions {
-    width: 75%;
-  }
 
   .el-dialog {
     --el-dialog-width: 95% !important;
@@ -81,6 +78,15 @@
     margin: {
       top: 3vh;
       bottom: 3vh;
+    }
+
+    .lyrics {
+      .el-card {
+        width: 80% !important;
+      }
+      .lyrics-selector-box {
+        width: 80% !important;
+      }
     }
 
     .search-box {
@@ -103,12 +109,6 @@
             width: 80%;
           }
         }
-      }
-    }
-
-    .lyrics-input {
-      .el-textarea__inner {
-        width: 80%;
       }
     }
 

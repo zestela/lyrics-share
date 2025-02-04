@@ -34,7 +34,9 @@
           right-width: 0px;
           top-left-radius: 15px;
           bottom-left-radius: 15px
-        };
+        }
+
+        ;
       }
 
       .el-input-group__append {
@@ -47,7 +49,9 @@
         border: {
           top-right-radius: 15px;
           bottom-right-radius: 15px
-        };
+        }
+
+        ;
       }
     }
   }
@@ -82,7 +86,9 @@
           width: 1px;
           color: color.$borderColor;
           radius: 15px;
-        };
+        }
+
+        ;
 
         .song-name-input .el-input__wrapper .el-input__inner {
           font-weight: bold;
@@ -105,20 +111,46 @@
     }
   }
 
-  .lyrics-input {
+  .lyrics {
     display: flex;
     justify-content: center;
-
-    .el-textarea__inner {
-      color: black;
-      border-radius: 15px;
-      border-color: color.$borderColor;
-      resize: none;
-      height: 30vh;
+    user-select: none;
+    height: 25vh;
+    overflow: scroll;
+    .el-card {
       width: 40%;
-      padding: 20px;
-      scrollbar-width: thin;
-      scrollbar-color: color.$borderColor transparent;
+    }
+
+    .lyrics-placecard {
+      box-shadow: none;
+      border-radius: 15px;
+    }
+
+    .lyrics-selector-box {
+      width: 40%;
+      display: flex;
+      flex-wrap: wrap;
+      * {
+        width: 100%;
+        min-height: 20%;
+        margin: 0;
+        margin-bottom: 5px;
+        padding: {
+          top: 8px;
+        };
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 15px;
+        border-color: color.$borderColor;
+      }
+      .lyrics-selector-unselect {
+        border-color: color.$borderColor;
+      }
+      .lyrics-selector-selected {
+        color: white;
+        background-color: color.$zestelaColor;
+        border-color: color.$zestelaColor;
+      }
     }
   }
 
@@ -147,29 +179,6 @@
       width: 83px;
       height: 36px;
       font-size: 16px !important;
-    }
-  }
-}
-
-#search_suggestions {
-  width: 40%;
-  height: 346px;
-  position: absolute;
-  margin-top: 50px;
-  z-index: 1;
-  border-radius: 15px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
-
-  .el-card__body {
-    flex-wrap: wrap;
-    --el-card-padding: 12px !important;
-
-    .el-button {
-      display: block;
-      border: none;
-      margin: 0 !important;
-      width: 100%;
-      text-align: start;
     }
   }
 }
@@ -285,6 +294,7 @@
       }
 
       box-shadow: none;
+
       border: {
         style: solid;
         width: 1px;
@@ -294,7 +304,9 @@
         bottom-right-radius: 15px;
         top-right-radius: 15px;
         bottom-left-radius: 15px;
-      };
+      }
+
+      ;
     }
   }
 
@@ -325,8 +337,10 @@
 }
 
 ::selection {
-  background: color.$zestelaColor; /* 粉红色的底色 */
-  color: white; /* 文字的颜色 */
+  background: color.$zestelaColor;
+  /* 粉红色的底色 */
+  color: white;
+  /* 文字的颜色 */
 }
 
 .unable-item {

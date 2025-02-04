@@ -8,29 +8,25 @@ import shareView2 from "./views/shareView2.vue";
     <img draggable="false" src="/logo.png" alt="" width="200px" />
   </el-header>
   <el-main>
-    <div class="search-box">
-      <el-input v-model="search_name" placeholder="输入想要分享的歌曲名称..." @keyup.enter="search_song">
-        <template #append><el-button @click="search_song">搜索</el-button></template>
-      </el-input>
-      <el-card id="search_suggestions" v-show="showSuggestions">
-        <el-button v-for="(content, index) in song_list" :key="index" @click="setInfo(index)">{{ content.name + " " +
-          content.artist }}</el-button>
-      </el-card>
-    </div>
-    <div v-show="showMainUI" class="info-box">
+    <div class="info-box">
       <div class="info-flexbox">
         <img draggable="false" :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
-        <el-tooltip content="可自行修改歌名、艺术家与歌词" placement="right" effect="light" :visible="showTip" auto-close=5000>
-          <div class="info-inbox">
-            <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input" />
-            <el-input v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
-          </div>
-        </el-tooltip>
+        <div class="info-inbox">
+          <el-input v-model="song_name" placeholder="歌曲名称" class="song-name-input" />
+          <el-input v-model="song_artist" placeholder="歌曲创作者" style="margin-top: -28px;" />
+        </div>
       </div>
     </div>
-    <el-input v-show="showMainUI" v-model="song_lyrics" rows="15" type="textarea" placeholder="歌曲歌词"
-      class="lyrics-input" />
-    <div v-show="showMainUI" class="select-box">
+    <div class="lyrics">
+      <el-card class="lyrics-placecard" v-model="song_lyrics" v-show="!showLyricsSelector">
+        请键入歌曲名称以选择歌词。
+      </el-card>
+      <div class="lyrics-selector-box" v-show="showLyricsSelector">
+        <el-button v-for="(text, index) in lyrics_list" :key="index" @click="setLyricsSelector(index)"
+          :class="isSelectedLyrics(index)">{{ text }}</el-button>
+      </div>
+    </div>
+    <div class="select-box">
       <div class="select-inbox">
         <el-select v-model="selectedView" placeholder="海报样式" size="large" @change="$forceUpdate()"
           style="margin-right: 20px;">
@@ -44,7 +40,7 @@ import shareView2 from "./views/shareView2.vue";
         </el-select>
       </div>
     </div>
-    <div v-show="showMainUI" class="generation-btn-box">
+    <div class="generation-btn-box">
       <el-button class="generation-btn" @click="generationShare">生成</el-button>
     </div>
   </el-main>
@@ -71,10 +67,6 @@ import shareView2 from "./views/shareView2.vue";
     <el-text class="mx-1" type="info">本页面显示的是低分辨率预览图，保存以获得高分辨率原图。<br>若预览图生成缓慢，请耐心等待。</el-text>
   </el-dialog>
   <el-dialog v-model="showSettingsDialog" title="设置">
-    <div class="api-input-box">
-      <el-text class="mx-1">API 地址</el-text>
-      <el-input v-model="api_url" placeholder="API 地址" />
-    </div>
     <div class="setting-item">
       <el-text class="mx-1">预览图生成倍数</el-text>
       <el-select v-model="selectedPreviewSize" placeholder="预览图生成倍数" size="large" @change="$forceUpdate()">
@@ -95,7 +87,7 @@ import shareView2 from "./views/shareView2.vue";
     <div class="share-btn-box"><el-button class="share-btn" @click="saveSettings">保存</el-button></div>
   </el-dialog>
   <div class="share-box" v-show="showView">
-    <component :is="selectedView" :name="song_name" :artist="song_artist" :lyrics="song_lyrics"
+    <component :is="selectedView" :name="song_name" :artist="song_artist" :lyrics="selectedLyrics"
       :coverUrl="song_coverUrl" :size="selectedSize" :bgdColor="bgdColor" />
   </div>
 </template>
@@ -103,15 +95,7 @@ import shareView2 from "./views/shareView2.vue";
 <script>
 import { extractColors } from 'extract-colors';
 import html2canvas from 'html2canvas';
-
-async function getJSON(url) {
-  try {
-    let response = await fetch(url);
-    return await response.json();
-  } catch (error) {
-    console.log("Request Failed", error);
-  }
-}
+import { converter } from '@/plugins/converter.js'
 
 export default {
   data() {
@@ -121,17 +105,16 @@ export default {
       song_artist: "",
       song_lyrics: "",
       song_coverUrl: "./default-cover.png",
-      song_list: [],
+      lyrics_list: [],
       cover_color: {},
       selectedView: "shareView1",
       selectedSize: "0",
+      selectedLyrics: "",
+      selectedLyricsIndex: [],
       showView: false,
-      showTip: false,
-      showMainUI: false,
-      showSuggestions: false,
+      showLyricsSelector: false,
       showSettingsDialog: false,
       showShareDialog: false,
-      api_url: "https://music.cyrilstudio.top",
       bgdColor: "",
       selectedText: {
         style: "缤纷样式",
@@ -143,7 +126,17 @@ export default {
   },
   components: { shareView1, shareView2 },
   watch: {
-    song_coverUrl() {
+    async song_name() { // 输入歌曲名后将歌词获取请求交给公共 converter
+      if (this.song_name != "" || this.song_name != " ") {
+        let data = await converter(this.song_name);
+        this.song_lyrics = data.lrc;
+        this.song_coverUrl = data.cover;
+        this.showLyricsSelector = true;
+      }
+      else
+        this.showLyricsSelector = false;
+    },
+    song_coverUrl() { // 封面链接变化时获取主题色
       let imgElement = new Image();
       imgElement.crossOrigin = 'Anonymous';
       imgElement.src = this.song_coverUrl;
@@ -153,47 +146,33 @@ export default {
         let colorLst = await extractColors(imgGetter.toDataURL("image/jpg"));
         this.bgdColor = colorLst[0].hex;
       }
+    },
+    song_lyrics() { // 获取到歌词后的处理
+      this.lyrics_list = [];
+      let data = this.song_lyrics.split(/[\n]/);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i] != "")
+          this.lyrics_list.push(data[i]);
+      }
+      this.selectedLyricsIndex = [];
     }
   },
   methods: {
-    async search_song() {
-      if (this.search_name == "")
-        return;
-      this.showTip = false;
-      this.song_list = this.song_list.slice(0, 0);
-      let response = await getJSON(
-        this.api_url + "/search?keywords=" + this.search_name
-      );
-      if (response.result.songCount < 10)
-        response = response.result.songs.slice(0, response.result.songCount);
-      else response = response.result.songs.slice(0, 10);
-      for (let i = 0; i < response.length; i++)
-        this.song_list.push({
-          name: response[i].name,
-          artist: response[i].artists[0].name,
-          id: response[i].id,
-        });
-      this.showSuggestions = true;
-    },
-    async setInfo(index) {
-      if (document.documentElement.clientWidth > 600)
-        this.showTip = true;
-      this.showMainUI = true;
-      this.song_name = this.song_list[index].name;
-      let response = await getJSON(
-        this.api_url + "/lyric?id=" + this.song_list[index].id
-      );
-      this.song_lyrics = response.lrc.lyric.replace(/\[(.*?)\]/g, "");
-      response = await getJSON(
-        this.api_url + "/song/detail?ids=" + this.song_list[index].id
-      );
-      this.song_coverUrl = response.songs[0].al.picUrl;
-      this.song_artist = this.song_list[index].artist;
-      this.showSuggestions = false;
+    setLyricsSelector(index) {
+      if (!this.selectedLyricsIndex.includes(index)) {
+        this.selectedLyricsIndex.push(index);
+      }
+      else {
+        this.selectedLyricsIndex = this.selectedLyricsIndex.filter(item => item !== index);
+      }
     },
     async generationShare() {
-      if (this.song_name == "" || this.song_artist == "" || this.song_lyrics == "")
+      this.selectedLyrics = "";
+      if (this.song_name == "" || this.song_artist == "")
         return;
+      for (let i = 0; i < this.selectedLyricsIndex.length; i++) {
+        this.selectedLyrics += this.lyrics_list[this.selectedLyricsIndex[i]] + "\n";
+      }
       this.showShareDialog = true;
       this.showView = true;
       let selectedTextStyles = ["", "缤纷样式", "简洁样式"];
@@ -217,15 +196,19 @@ export default {
       });
     },
     saveSettings() {
-      localStorage.setItem('apiUrl', this.api_url);
       localStorage.setItem('selectedGenerateSize', this.selectedGenerateSize);
       localStorage.setItem('selectedPreviewSize', this.selectedPreviewSize);
       this.showSettingsDialog = false;
+    },
+    isSelectedLyrics(index) {
+      if (!this.selectedLyricsIndex.includes(index))
+        return "lyrics-selector-unselect"
+      else
+        return "lyrics-selector-selected"
     }
   },
   mounted() {
-    if (localStorage.getItem('apiUrl') != null && localStorage.getItem('selectedGenerateSize') != null && localStorage.getItem('selectedPreviewSize') != null) {
-      this.api_url = localStorage.getItem('apiUrl');
+    if (localStorage.getItem('selectedGenerateSize') != null && localStorage.getItem('selectedPreviewSize') != null) {
       this.selectedGenerateSize = localStorage.getItem('selectedGenerateSize');
       this.selectedPreviewSize = localStorage.getItem('selectedPreviewSize');
     }

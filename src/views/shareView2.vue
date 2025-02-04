@@ -50,23 +50,13 @@ export default {
     <div class="info-card">
       <div class="info-inbox">
         <div class="texts-and-cover">
-          <img
-            class="cover-img"
-            draggable="false"
-            ref="coverImg"
-            :src="coverUrl"
-          />
+          <img class="cover-img" draggable="false" ref="coverImg" :src="coverUrl" />
           <div style="margin-left: 15px; line-height: 1">
             <div class="name-text" v-text="name"></div>
             <div class="artist-text" v-text="artist"></div>
           </div>
         </div>
-        <img
-          class="logo-img"
-          draggable="false"
-          src="/logo.png"
-          alt="Lyrics Share Logo"
-        />
+        <img class="logo-img" draggable="false" src="/logo.png" alt="Lyrics Share Logo" />
       </div>
     </div>
   </div>
@@ -82,17 +72,19 @@ export default {
     font-family: 'Noto Serif SC', sans-serif !important;
   }
 
-  margin: 0;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  width: v-bind(shareBodyWidth);
-  min-height: v-bind(shareBodyMinHeight);
-  background-color: white;
-  color: #311e8f;
-  font-size: 17px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+  & {
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: v-bind(shareBodyWidth);
+    min-height: v-bind(shareBodyMinHeight);
+    background-color: white;
+    color: #311e8f;
+    font-size: 17px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
 
   .lyrics-card {
     display: inline-flex;
@@ -152,12 +144,10 @@ export default {
     width: 100%;
     height: 1px;
     content: '';
-    background: linear-gradient(
-      to right,
-      rgba(49, 30, 143, 0.08) 10%,
-      #311e8f 50%,
-      rgba(49, 30, 143, 0.08) 90%
-    );
+    background: linear-gradient(to right,
+        rgba(49, 30, 143, 0.08) 10%,
+        #311e8f 50%,
+        rgba(49, 30, 143, 0.08) 90%);
   }
 }
 </style>

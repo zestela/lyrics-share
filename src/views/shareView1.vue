@@ -53,22 +53,11 @@ export default {
         <div class="lyrics" v-html="lyrics"></div>
       </div>
       <div class="info-card">
-        <img
-          class="cover-img"
-          draggable="false"
-          ref="coverImg"
-          :src="coverUrl"
-        />
+        <img class="cover-img" draggable="false" ref="coverImg" :src="coverUrl" />
         <div>
           <div class="name-text" v-text="name"></div>
           <div class="artist-text" v-text="artist"></div>
-          <img
-            class="logo-img"
-            draggable="false"
-            src="/view-logo-1.png"
-            width="90"
-            alt="Lyrics Share Logo"
-          />
+          <img class="logo-img" draggable="false" src="/view-logo-1.png" width="90" alt="Lyrics Share Logo" />
         </div>
       </div>
     </div>
@@ -81,21 +70,22 @@ export default {
     user-select: none;
   }
 
-  margin: 0;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  width: v-bind(shareBodyWidth);
-  min-height: v-bind(shareBodyMinHeight);
-  background-color: v-bind(bgdColor);
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-
-  color: white;
-  font-family: 'HarmonyOS Sans', sans-serif;
-  font-weight: bold;
-  font-size: 17px;
+  & {
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: v-bind(shareBodyWidth);
+    min-height: v-bind(shareBodyMinHeight);
+    background-color: v-bind(bgdColor);
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'HarmonyOS Sans', sans-serif;
+    font-weight: bold;
+    font-size: 17px;
+  }
 
   .main-card {
     z-index: 100;
