@@ -112,6 +112,9 @@
   }
 
   .lyrics {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
     display: flex;
     justify-content: center;
     user-select: none;
