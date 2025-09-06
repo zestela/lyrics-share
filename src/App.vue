@@ -8,6 +8,15 @@ import shareView2 from "./views/shareView2.vue";
     <img draggable="false" src="/logo.png" alt="" width="200px" />
   </el-header>
   <el-main>
+    <div class="search-box">
+      <el-input v-model="search_name" placeholder="输入想要分享的歌曲名称..." @keyup.enter="search_song">
+        <template #append><el-button @click="search_song">搜索</el-button></template>
+      </el-input>
+      <el-card id="search_suggestions" v-show="showSuggestions">
+        <el-button v-for="(content, index) in song_list" :key="index" @click="setInfo(index)">{{ content.name + " - " +
+          content.artist }}</el-button>
+      </el-card>
+    </div>
     <div class="info-box">
       <div class="info-flexbox">
         <img draggable="false" :src="song_coverUrl" alt="cover" width="87" id="coverImg" crossorigin="anonymous" />
@@ -95,7 +104,7 @@ import shareView2 from "./views/shareView2.vue";
 <script>
 import { extractColors } from 'extract-colors';
 import html2canvas from 'html2canvas';
-import { converter } from '@/plugins/converter.js'
+import { converter, search, cover } from '@/plugins/converter.js'
 
 export default {
   data() {
@@ -115,27 +124,19 @@ export default {
       showLyricsSelector: false,
       showSettingsDialog: false,
       showShareDialog: false,
+      showSuggestions: false,
       bgdColor: "",
       selectedText: {
         style: "缤纷样式",
         size: "全屏幕大小"
       },
       selectedPreviewSize: "0.5",
-      selectedGenerateSize: "2"
+      selectedGenerateSize: "2",
+      song_list: [],
     };
   },
   components: { shareView1, shareView2 },
   watch: {
-    async song_name() { // 输入歌曲名后将歌词获取请求交给公共 converter
-      if (this.song_name != "" || this.song_name != " ") {
-        let data = await converter(this.song_name);
-        this.song_lyrics = data.lrc;
-        this.song_coverUrl = data.cover;
-        this.showLyricsSelector = true;
-      }
-      else
-        this.showLyricsSelector = false;
-    },
     song_coverUrl() { // 封面链接变化时获取主题色
       let imgElement = new Image();
       imgElement.crossOrigin = 'Anonymous';
@@ -154,6 +155,8 @@ export default {
         if (data[i] != "")
           this.lyrics_list.push(data[i]);
       }
+      if (this.lyrics_list[this.lyrics_list.length - 1] == " ")
+        this.lyrics_list.pop();
       this.selectedLyricsIndex = [];
     }
   },
@@ -205,7 +208,35 @@ export default {
         return "lyrics-selector-unselect"
       else
         return "lyrics-selector-selected"
-    }
+    },
+
+    async search_song() {
+      if (this.search_name == "")
+        return;
+      this.showTip = false;
+      this.song_list = [];
+      const response = await search(this.search_name);
+      const resLength = response.length <= 10 ? response.length : 10;
+      for (let i = 0; i < resLength; i++)
+        this.song_list.push({
+          name: response[i].name,
+          artist: response[i].artistName,
+          id: response[i].id,
+          cover: response[i].cover
+        });
+      this.showSuggestions = true;
+    },
+    async setInfo(index) {
+      if (document.documentElement.clientWidth > 600)
+        this.showTip = true;
+      this.showMainUI = true;
+      this.song_name = this.song_list[index].name;
+      this.song_lyrics = await converter(this.song_list[index].id);
+      this.song_coverUrl = await cover(this.song_list[index].name);
+      this.song_artist = this.song_list[index].artist;
+      this.showSuggestions = false;
+      this.showLyricsSelector = true;
+    },
   },
   mounted() {
     if (localStorage.getItem('selectedGenerateSize') != null && localStorage.getItem('selectedPreviewSize') != null) {
