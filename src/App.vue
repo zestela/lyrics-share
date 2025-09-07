@@ -232,7 +232,7 @@ export default {
       this.showMainUI = true;
       this.song_name = this.song_list[index].name;
       this.song_lyrics = await converter(this.song_list[index].id);
-      this.song_coverUrl = await cover(this.song_list[index].name);
+      this.song_coverUrl = await cover(this.song_list[index].name, this.song_list[index].artist);
       this.song_artist = this.song_list[index].artist;
       this.showSuggestions = false;
       this.showLyricsSelector = true;
