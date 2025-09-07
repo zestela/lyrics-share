@@ -4,7 +4,7 @@ const coverApi = "https://lrc.imly.top:28883/cover?title=";
 
 export async function converter(id) {
     let response = await fetch(lrcApi + id);
-    return String(JSON.parse(await response.text()).syncedLyrics).replace(/\[(.*?)\]/g, "").replace(/^\s*\n/g, "")
+    return String(JSON.parse(await response.text()).plainLyrics).replace(/\[(.*?)\]/g, "").replace(/^\s*\n/g, "")
 }
 
 export async function cover(name,singer) {
