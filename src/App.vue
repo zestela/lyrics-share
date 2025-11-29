@@ -1,6 +1,7 @@
 <script setup>
 import shareView1 from "./views/shareView1.vue";
 import shareView2 from "./views/shareView2.vue";
+import { Edit, Plus } from '@element-plus/icons-vue';
 </script>
 
 <template>
@@ -16,6 +17,14 @@ import shareView2 from "./views/shareView2.vue";
         <el-button v-for="(content, index) in song_list" :key="index" @click="setInfo(index)">{{ content.name + " - " +
           content.artist }}</el-button>
       </el-card>
+    </div>
+    <div class="manual-input-btn-box">
+      <el-button type="primary" @click="showManualInputModal = true" class="manual-input-btn">
+        <el-icon>
+          <Edit />
+        </el-icon>
+        手动输入歌词
+      </el-button>
     </div>
     <div class="info-box">
       <div class="info-flexbox">
@@ -50,7 +59,7 @@ import shareView2 from "./views/shareView2.vue";
       </div>
     </div>
     <div class="generation-btn-box">
-      <el-button class="generation-btn" @click="generationShare">生成</el-button>
+      <el-button class="generation-btn" @click="generationShare" :disabled="selectedLyricsIndex.length == 0">生成</el-button>
     </div>
   </el-main>
   <el-footer>
@@ -95,6 +104,47 @@ import shareView2 from "./views/shareView2.vue";
     </div>
     <div class="share-btn-box"><el-button class="share-btn" @click="saveSettings">保存</el-button></div>
   </el-dialog>
+
+  <el-dialog v-model="showManualInputModal" title="手动输入歌词" width="600px" class="manual-input-modal"
+    :close-on-click-modal="false" :close-on-press-escape="false">
+    <div class="manual-input-section">
+      <el-text class="section-title">歌词内容</el-text>
+      <el-text type="info" class="input-tip">请输入完整的歌词内容，每行一句</el-text>
+      <el-input v-model="manualLyrics" type="textarea" :rows="8" placeholder="请输入歌词内容..." maxlength="2000"
+        show-word-limit resize="none" class="lyrics-textarea" />
+    </div>
+    <div class="manual-input-section">
+      <el-text class="section-title">歌曲封面</el-text>
+      <div class="cover-upload-area">
+        <el-upload ref="coverUpload" class="cover-upload" action="#" :auto-upload="false" :show-file-list="false"
+          :on-change="handleCoverChange" accept="image/jpeg,image/png,image/jpg">
+          <div v-if="manualCoverPreview" class="cover-preview">
+            <img :src="manualCoverPreview" alt="封面预览" class="cover-image" />
+            <div class="cover-overlay">
+              <span>更换封面</span>
+            </div>
+          </div>
+          <div v-else class="cover-upload-placeholder">
+            <el-icon>
+              <Plus />
+            </el-icon>
+            <span>上传封面图片</span>
+          </div>
+        </el-upload>
+      </div>
+    </div>
+
+    <!-- 操作按钮区域 -->
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="handleManualInputCancel">取消</el-button>
+        <el-button type="primary" @click="handleManualInputConfirm" :disabled="!isManualInputValid"
+          :loading="isConfirmLoading">
+          确认
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
   <div class="share-box" v-show="showView">
     <component :is="selectedView" :name="song_name" :artist="song_artist" :lyrics="selectedLyrics"
       :coverUrl="song_coverUrl" :size="selectedSize" :bgdColor="bgdColor" />
@@ -133,6 +183,13 @@ export default {
       selectedPreviewSize: "0.5",
       selectedGenerateSize: "2",
       song_list: [],
+
+      // 手动输入模态框相关数据
+      showManualInputModal: false,
+      manualLyrics: "",
+      manualCoverFile: null,
+      manualCoverPreview: "",
+      isConfirmLoading: false,
     };
   },
   components: { shareView1, shareView2 },
@@ -158,6 +215,11 @@ export default {
       if (this.lyrics_list[this.lyrics_list.length - 1] == " ")
         this.lyrics_list.pop();
       this.selectedLyricsIndex = [];
+    }
+  },
+  computed: {
+    isManualInputValid() {
+      return this.manualLyrics.trim() !== '';
     }
   },
   methods: {
@@ -210,6 +272,63 @@ export default {
         return "lyrics-selector-selected"
     },
 
+    handleManualInputCancel() {
+      this.manualLyrics = "";
+      this.manualCoverFile = null;
+      this.manualCoverPreview = "";
+      this.showManualInputModal = false;
+      if (this.manualCoverPreview) {
+        URL.revokeObjectURL(this.manualCoverPreview);
+      }
+    },
+    async handleManualInputConfirm() {
+      try {
+        this.song_lyrics = this.manualLyrics;
+
+        if (this.manualCoverFile) {
+          try {
+            if (!this.manualCoverFile.type.startsWith('image/')) {
+              throw new Error('无效的图片文件类型');
+            }
+            if (this.manualCoverFile.size > 5 * 1024 * 1024) {
+              throw new Error('图片文件大小超过5MB限制');
+            }
+
+            this.song_coverUrl = URL.createObjectURL(this.manualCoverFile);
+          } catch (coverError) {
+            console.warn('封面图片处理失败，使用默认封面:', coverError);
+            this.song_coverUrl = "./default-cover.png";
+            alert('封面图片处理失败，已使用默认封面');
+          }
+        } else {
+          this.song_coverUrl = "./default-cover.png";
+        }
+
+        this.showLyricsSelector = true;
+        this.showManualInputModal = false;
+        this.handleManualInputCancel();
+      } catch (error) {
+        console.error("手动输入确认失败:", error);
+        if (error.message.includes('数据验证失败')) {
+          alert('数据验证失败，请检查输入内容');
+        } else if (error.message.includes('图片文件')) {
+          alert('图片文件处理失败，请重新上传');
+        } else {
+          alert('数据传递失败，请重试');
+        }
+      }
+    },
+
+    handleCoverChange(file) {
+      const isImage = file.raw.type.startsWith('image/');
+      if (!isImage) {
+        alert('只能上传图片文件!');
+        return false;
+      }
+      this.manualCoverFile = file.raw;
+      this.manualCoverPreview = URL.createObjectURL(file.raw);
+      return false;
+    },
     async search_song() {
       if (this.search_name == "")
         return;
@@ -224,6 +343,14 @@ export default {
           id: response[i].id,
           cover: response[i].cover
         });
+      if (response.length == 0) {
+        this.song_list.push({
+          name: "暂无搜索结果",
+          artist: "请尝试使用手动添加歌词",
+          id: -1,
+          cover: ""
+        });
+      }
       this.showSuggestions = true;
     },
     async setInfo(index) {

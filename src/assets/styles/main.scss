@@ -1,5 +1,9 @@
 @use "color";
 
+#app {
+  height: 100vh;
+}
+
 .el-main {
   margin: {
     top: 3vh;
@@ -8,7 +12,10 @@
 
   .search-box {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    position: relative;
 
     .el-input {
       width: 40%;
@@ -52,6 +59,32 @@
         }
 
         ;
+      }
+    }
+
+
+    #search_suggestions {
+      width: 40%;
+      height: 346px;
+      position: absolute;
+      top: 50px;
+      z-index: 1;
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
+
+      .el-card__body {
+        flex-wrap: wrap;
+        --el-card-padding: 12px !important;
+
+        .el-button {
+          display: block;
+          border: none;
+          margin: 0 !important;
+          width: 100%;
+          text-align: start;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
   }
@@ -120,6 +153,7 @@
     user-select: none;
     height: 25vh;
     overflow: scroll;
+
     .el-card {
       width: 40%;
     }
@@ -133,27 +167,34 @@
       width: 40%;
       display: flex;
       flex-wrap: wrap;
+
       * {
         width: 100%;
         min-height: 20%;
         margin: 0;
         margin-bottom: 5px;
+
         padding: {
           top: 8px;
-        };
+        }
+
+        ;
         font-size: 20px;
         font-weight: bold;
         border-radius: 15px;
         border-color: color.$borderColor;
         overflow: hidden;
         text-overflow: ellipsis;
+
         span {
           border-radius: 0;
         }
       }
+
       .lyrics-selector-unselect {
         border-color: color.$borderColor;
       }
+
       .lyrics-selector-selected {
         color: white;
         background-color: color.$zestelaColor;
@@ -353,25 +394,281 @@
   pointer-events: none;
 }
 
-#search_suggestions {
-  width: 40%;
-  height: 346px;
-  position: absolute;
-  margin-top: 50px;
-  z-index: 1;
-  border-radius: 15px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.07);
-  .el-card__body {
-    flex-wrap: wrap;
-    --el-card-padding: 12px !important;
-    .el-button {
+.manual-input-modal {
+  .el-dialog {
+    --el-dialog-width: 600px !important;
+    border-radius: 20px !important;
+
+    .el-dialog__header {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .el-dialog__body {
+      padding: 20px 24px;
+    }
+  }
+
+  .manual-input-section {
+    margin-bottom: 24px;
+
+    .section-title {
       display: block;
-      border: none;
-      margin: 0 !important;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 12px;
+    }
+
+    .input-tip {
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .lyrics-textarea {
+      .el-textarea__inner {
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        resize: none;
+        font-family: inherit;
+        transition: border-color 0.2s ease;
+
+        &:hover {
+          border-color: #d1d5db;
+        }
+
+        &:focus {
+          border-color: color.$zestelaColor;
+          box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        }
+      }
+    }
+
+    .cover-upload-area {
+      .cover-upload {
+        width: 100%;
+
+        .el-upload {
+          width: 100%;
+        }
+
+        .cover-preview {
+          position: relative;
+          width: 120px;
+          height: 120px;
+          border-radius: 12px;
+          overflow: hidden;
+          border: 2px dashed #e5e7eb;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &:hover {
+            border-color: color.$zestelaColor;
+
+            .cover-overlay {
+              opacity: 1;
+            }
+          }
+
+          .cover-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .cover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+
+            .el-icon {
+              font-size: 24px;
+              margin-bottom: 8px;
+            }
+
+            span {
+              font-size: 12px;
+            }
+          }
+        }
+
+        .cover-upload-placeholder {
+          width: 120px;
+          height: 120px;
+          border: 2px dashed #d1d5db;
+          border-radius: 12px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: #6b7280;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &:hover {
+            border-color: color.$zestelaColor;
+            color: color.$zestelaColor;
+          }
+
+          .el-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+          }
+
+          span {
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+
+  .dialog-footer {
+    .el-button {
+      border-radius: 8px;
+      padding: 10px 24px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+
+      &:first-child {
+        border: 1px solid #d1d5db;
+
+        &:hover {
+          border-color: #9ca3af;
+          background-color: #f9fafb;
+        }
+      }
+
+      &:last-child {
+        background-color: color.$zestelaColor;
+        border-color: color.$zestelaColor;
+
+        &:hover:not(.is-disabled) {
+          background-color: darken(color.$zestelaColor, 10%);
+          border-color: darken(color.$zestelaColor, 10%);
+        }
+
+        &.is-disabled {
+          background-color: #d1d5db;
+          border-color: #d1d5db;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+.manual-input-btn-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+
+  .manual-input-btn {
+    background-color: color.$zestelaColor;
+    border-color: color.$zestelaColor;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: darken(color.$zestelaColor, 10%);
+      border-color: darken(color.$zestelaColor, 10%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    }
+
+    .el-icon {
+      margin-right: 6px;
+    }
+  }
+}
+
+.manual-input-modal {
+  .el-dialog {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.el-dialog--center {
+      animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  .el-overlay {
+    .el-overlay-mask {
+      animation: fadeIn 0.3s ease;
+    }
+  }
+}
+
+@keyframes modalSlideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.info-box,
+.lyrics {
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .manual-input-modal {
+    .el-dialog {
+      --el-dialog-width: 90% !important;
+      margin: 20px auto;
+    }
+
+    .manual-input-section {
+      .song-info-inputs {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .cover-upload-area {
+        .cover-upload {
+
+          .cover-preview,
+          .cover-upload-placeholder {
+            width: 100px;
+            height: 100px;
+          }
+        }
+      }
+    }
+  }
+
+  .manual-input-btn-box {
+    .manual-input-btn {
       width: 100%;
-      text-align: start;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      justify-content: center;
     }
   }
 }
