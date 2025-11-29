@@ -1,6 +1,7 @@
 <script setup>
 import shareView1 from "./views/shareView1.vue";
 import shareView2 from "./views/shareView2.vue";
+import shareView3 from "./views/shareView3.vue";
 import { Edit, Plus } from '@element-plus/icons-vue';
 </script>
 
@@ -50,6 +51,7 @@ import { Edit, Plus } from '@element-plus/icons-vue';
           style="margin-right: 20px;">
           <el-option label="缤纷样式" value="shareView1" />
           <el-option label="简洁样式" value="shareView2" />
+          <el-option label="缤纷样式（Blur，Experiment）" value="shareView3" />
         </el-select>
         <el-select class="select-2" v-model="selectedSize" placeholder="样式大小" size="large" @change="$forceUpdate()">
           <el-option label="全屏幕大小" value="0" />
@@ -192,7 +194,7 @@ export default {
       isConfirmLoading: false,
     };
   },
-  components: { shareView1, shareView2 },
+  components: { shareView1, shareView2, shareView3 },
   watch: {
     song_coverUrl() { // 封面链接变化时获取主题色
       let imgElement = new Image();
@@ -240,7 +242,7 @@ export default {
       }
       this.showShareDialog = true;
       this.showView = true;
-      let selectedTextStyles = ["", "缤纷样式", "简洁样式"];
+      let selectedTextStyles = ["", "缤纷样式", "简洁样式", "缤纷样式（Blur，Experiment）"];
       let selectedTextSizes = ["全屏幕大小", "手机大小", "小尺寸"]
       this.selectedText.size = selectedTextSizes[this.selectedSize];
       this.selectedText.style = selectedTextStyles[this.selectedView.split("w")[1]]
