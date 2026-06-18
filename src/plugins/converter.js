@@ -1,6 +1,6 @@
 const searchApi = "https://lrclib.net/api/search?q=";
 const lrcApi = "https://lrclib.net/api/get/";
-const coverApi = "https://lrc.imly.top:28883/cover?title=";
+const coverApi = "https://api.zestela.co/cover.php?title=";
 
 export async function converter(id) {
     let response = await fetch(lrcApi + id);
